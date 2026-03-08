@@ -9,48 +9,40 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@400;600;800;900&display=swap');
         
         :root {
-            /* DARK LIQUID THEME */
-            --bg-base: #030712;
-            --liquid-1: rgba(6, 182, 212, 0.4);   /* Cyan */
-            --liquid-2: rgba(139, 92, 246, 0.4);  /* Purple */
-            --liquid-3: rgba(59, 130, 246, 0.4);  /* Blue */
-            
-            --glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
-            --glass-border-light: rgba(255, 255, 255, 0.15);
+            /* GLOBAL THEME VARS */
+            --glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+            --glass-border-light: rgba(255, 255, 255, 0.1);
             --glass-border-dark: rgba(255, 255, 255, 0.02);
             --glass-shadow: 0 16px 40px 0 rgba(0, 0, 0, 0.4);
             
             --text-main: #f8fafc;
-            --text-muted: #cbd5e1;
+            --text-muted: #94a3b8;
+            --bg-base: #030712;
             
-            --accent-glow: #06b6d4;
-            --gradient-text: linear-gradient(135deg, #22d3ee, #a855f7);
+            /* NEW AURORA GRADIENT & ACCENTS */
+            --accent-glow: #38bdf8;
+            --gradient-text: linear-gradient(135deg, #38bdf8, #c084fc);
         }
 
         body.light-mode {
-            /* LIGHT LIQUID THEME */
-            --bg-base: #f1f5f9;
-            --liquid-1: rgba(6, 182, 212, 0.25);
-            --liquid-2: rgba(168, 85, 247, 0.2);
-            --liquid-3: rgba(59, 130, 246, 0.25);
-            
-            --glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.3) 100%);
-            --glass-border-light: rgba(255, 255, 255, 0.8);
-            --glass-border-dark: rgba(255, 255, 255, 0.2);
-            --glass-shadow: 0 16px 40px 0 rgba(148, 163, 184, 0.2);
+            --glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.4) 100%);
+            --glass-border-light: rgba(255, 255, 255, 1);
+            --glass-border-dark: rgba(255, 255, 255, 0.5);
+            --glass-shadow: 0 16px 40px 0 rgba(148, 163, 184, 0.15);
             
             --text-main: #0f172a;
             --text-muted: #475569;
+            --bg-base: #f8fafc;
             
-            --accent-glow: #0ea5e9;
-            --gradient-text: linear-gradient(135deg, #0284c7, #7e22ce);
+            --accent-glow: #0284c7;
+            --gradient-text: linear-gradient(135deg, #0284c7, #9333ea);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            transition: color 0.4s ease;
+            transition: color 0.3s ease, background-color 0.3s ease;
         }
 
         body {
@@ -58,363 +50,152 @@
             color: var(--text-main);
             font-family: 'Inter', sans-serif;
             line-height: 1.7;
-            overflow-x: hidden;
-            position: relative;
+            overflow-x: hidden; 
         }
 
         /* --- LIQUID BACKGROUND ANIMATION --- */
         .liquid-bg {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1;
-            overflow: hidden;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1; overflow: hidden;
             background: var(--bg-base);
         }
 
         .orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            animation: float 20s infinite ease-in-out alternate;
+            position: absolute; border-radius: 50%;
+            filter: blur(120px); opacity: 0.6;
+            animation: float 25s infinite ease-in-out alternate;
+            transition: background 1.5s ease-in-out; /* Smooth color transition */
         }
 
-        .orb-1 {
-            width: 600px; height: 600px;
-            background: var(--liquid-1);
-            top: -100px; left: -100px;
-        }
-
-        .orb-2 {
-            width: 700px; height: 700px;
-            background: var(--liquid-2);
-            bottom: -200px; right: -100px;
-            animation-delay: -5s;
-        }
-
-        .orb-3 {
-            width: 500px; height: 500px;
-            background: var(--liquid-3);
-            top: 40%; left: 30%;
-            animation-delay: -10s;
-        }
+        .orb-1 { width: 60vw; height: 60vw; max-width: 800px; max-height: 800px; top: -10%; left: -10%; }
+        .orb-2 { width: 50vw; height: 50vw; max-width: 700px; max-height: 700px; bottom: -10%; right: -10%; animation-delay: -5s; }
 
         @keyframes float {
             0% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(100px, 50px) scale(1.1); }
-            100% { transform: translate(-50px, 100px) scale(0.9); }
+            50% { transform: translate(10vw, 5vh) scale(1.1); }
+            100% { transform: translate(-5vw, 10vh) scale(0.9); }
         }
 
-        /* --- TYPOGRAPHY UPGRADES --- */
-        h1, h2, h3, .step-num, .brand {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-
+        /* --- TYPOGRAPHY --- */
+        h1, h2, h3, .step-num, .brand { font-family: 'Plus Jakarta Sans', sans-serif; }
+        
         h1 {
-            font-size: 6.5rem; /* Massive, premium header */
-            font-weight: 900;
-            text-align: center;
-            letter-spacing: -2.5px;
-            background: var(--gradient-text);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 1.5rem;
-            line-height: 1.05;
-            filter: drop-shadow(0px 10px 20px rgba(0,0,0,0.1));
+            font-size: clamp(3rem, 6vw, 6.5rem); 
+            font-weight: 900; text-align: center; letter-spacing: -2px;
+            background: var(--gradient-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 1.5rem; line-height: 1.1;
         }
 
         h2 {
-            font-size: 4rem; /* Larger section titles */
-            font-weight: 800;
-            text-align: center;
-            margin-bottom: 4rem;
-            letter-spacing: -1.5px;
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 800; text-align: center; margin-bottom: 3rem; letter-spacing: -1px;
         }
 
-        h3 {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-            font-weight: 800;
-        }
+        h3 { font-size: 1.5rem; margin-bottom: 1rem; font-weight: 800; color: var(--text-main); }
+        p { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 1rem; }
+        
+        .highlight { font-weight: 700; color: var(--accent-glow); }
 
-        p {
-            font-size: 1.25rem; /* Highly readable body text */
-            color: var(--text-muted);
-            margin-bottom: 1.2rem;
-        }
-
-        .highlight {
-            color: var(--accent-glow);
-            font-weight: 600;
-        }
-
+        /* --- LAYOUT & CARDS --- */
         .slide {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 10rem 2rem 5rem 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 10;
+            min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
+            align-items: center; padding: 8rem 2rem 4rem 2rem; position: relative; z-index: 10;
         }
 
-        /* --- LIQUID GLASS CARDS --- */
+        .slide-content { width: 100%; max-width: 1300px; display: flex; flex-direction: column; align-items: center; }
+
         .glass-panel {
-            background: var(--glass-bg);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid var(--glass-border-dark);
-            border-top: 1px solid var(--glass-border-light);
-            border-left: 1px solid var(--glass-border-light);
-            border-radius: 32px;
-            box-shadow: var(--glass-shadow);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+            background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border-dark); border-top: 1px solid var(--glass-border-light);
+            border-left: 1px solid var(--glass-border-light); border-radius: 24px;
+            box-shadow: var(--glass-shadow); padding: 2.5rem;
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         .glass-panel:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 24px 50px 0 rgba(0, 0, 0, 0.5);
+            transform: translateY(-5px);
+            border-color: var(--accent-glow);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }
 
-        /* Grid Layout */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-            gap: 2.5rem;
-            width: 100%;
-        }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; width: 100%; }
 
-        .card {
-            padding: 3rem;
-        }
-
-        /* --- IMAGE COMPARISON SLIDER --- */
+        /* --- SLIDER --- */
         .slider-container {
-            position: relative;
-            width: 100%;
-            max-width: 1100px;
-            aspect-ratio: 16 / 9;
-            border-radius: 24px;
-            overflow: hidden;
-            margin-top: 4rem;
-            --position: 50%; 
+            position: relative; width: 100%; max-width: 1000px; aspect-ratio: 16 / 9;
+            border-radius: 20px; overflow: hidden; margin-top: 3rem; --position: 50%; padding: 0;
         }
+        .slider-image { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; pointer-events: none; }
+        .slider-image.front { clip-path: polygon(0 0, var(--position) 0, var(--position) 100%, 0 100%); }
+        .slider-input { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 10; }
+        .slider-line { position: absolute; top: 0; bottom: 0; left: var(--position); width: 3px; background: #fff; transform: translateX(-50%); pointer-events: none; z-index: 5; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
+        .slider-button { position: absolute; top: 50%; left: var(--position); transform: translate(-50%, -50%); width: 40px; height: 40px; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border-radius: 50%; display: flex; justify-content: center; align-items: center; pointer-events: none; z-index: 5; color: #000; box-shadow: 0 0 15px rgba(0,0,0,0.3); }
 
-        .slider-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            position: absolute;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-        }
-
-        .slider-image.front {
-            clip-path: polygon(0 0, var(--position) 0, var(--position) 100%, 0 100%);
-        }
-
-        .slider-input {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0; 
-            cursor: pointer;
-            z-index: 10;
-        }
-
-        .slider-line {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: var(--position);
-            width: 4px;
-            background: #fff;
-            transform: translateX(-50%);
-            pointer-events: none;
-            z-index: 5;
-            box-shadow: 0 0 15px rgba(0,0,0,0.5);
-        }
-
-        .slider-button {
-            position: absolute;
-            top: 50%;
-            left: var(--position);
-            transform: translate(-50%, -50%);
-            width: 48px;
-            height: 48px;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            pointer-events: none;
-            z-index: 5;
-            box-shadow: 0 0 20px rgba(0,0,0,0.3);
-            color: #000;
-        }
-
-        /* --- EXECUTION FLOW & ARROWS --- */
-        .flow-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            max-width: 1000px;
-        }
-
-        .flow-step {
-            display: flex;
-            align-items: center;
-            padding: 2.5rem 3rem;
-            width: 100%;
-        }
-
+        /* --- EXECUTION FLOW --- */
+        .flow-container { display: flex; flex-direction: column; width: 100%; max-width: 900px; gap: 1.5rem; }
+        .flow-step { display: flex; align-items: flex-start; padding: 2.5rem; gap: 2rem; }
         .step-num {
-            font-size: 4rem;
-            line-height: 1;
-            background: var(--gradient-text);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-right: 2.5rem;
-            font-weight: 900;
+            font-size: 3.5rem; line-height: 1; font-weight: 900;
+            background: var(--gradient-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            min-width: 80px; text-align: center;
         }
-
-        .flow-arrow {
-            color: var(--accent-glow);
-            margin: 1.5rem 0;
-            animation: pulseArrow 2s infinite ease-in-out;
-            opacity: 0.7;
-        }
-
-        .flow-arrow svg {
-            width: 40px;
-            height: 40px;
-            filter: drop-shadow(0 0 10px var(--accent-glow));
-        }
-
-        @keyframes pulseArrow {
-            0% { transform: translateY(-5px); opacity: 0.5; }
-            50% { transform: translateY(5px); opacity: 1; }
-            100% { transform: translateY(-5px); opacity: 0.5; }
-        }
+        .flow-content h3 { font-size: 1.6rem; margin-bottom: 0.8rem; border-bottom: 1px solid var(--glass-border-light); padding-bottom: 0.5rem; }
+        .flow-content p { margin-bottom: 0.5rem; font-size: 1.05rem; }
 
         /* --- NAVIGATION --- */
         nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 1.5rem 3rem;
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            position: fixed; top: 0; width: 100%; padding: 1rem 3rem;
+            background: rgba(3, 7, 18, 0.7); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
             border-bottom: 1px solid var(--glass-border-dark);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 100;
+            display: flex; justify-content: space-between; align-items: center; z-index: 100;
+        }
+        body.light-mode nav { background: rgba(255, 255, 255, 0.7); border-bottom: 1px solid rgba(0,0,0,0.1);}
+        .nav-links { display: flex; gap: 2rem; }
+        nav a { color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 0.95rem; }
+        nav a:hover { color: var(--text-main); }
+        .brand { font-weight: 900; font-size: 1.5rem; letter-spacing: -0.5px; background: var(--gradient-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .theme-toggle { background: transparent; border: 1px solid var(--glass-border-light); color: var(--text-main); padding: 0.5rem 1.2rem; border-radius: 50px; cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; display: flex; align-items: center; gap: 8px; transition: all 0.3s ease; }
+        .theme-toggle:hover { background: var(--glass-border-light); }
+
+        /* --- RESPONSIVE FIXES --- */
+        @media (max-width: 992px) {
+            nav { padding: 1rem 2rem; }
+            .nav-links { display: none; }
+        }
+        @media (max-width: 768px) {
+            h1 { font-size: 3rem; }
+            h2 { font-size: 2rem; }
+            .slide { padding: 6rem 1rem 3rem 1rem; }
+            .flow-step { flex-direction: column; gap: 1rem; padding: 1.5rem; }
+            .step-num { text-align: left; font-size: 2.5rem; }
+            nav { flex-direction: column; gap: 1rem; padding: 1rem; }
+            .slider-container { margin-top: 1.5rem; border-radius: 12px; }
+            .glass-panel { padding: 1.5rem; }
         }
 
-        .nav-links {
-            display: flex;
-            gap: 2.5rem;
-        }
-
-        nav a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.05rem;
-            transition: color 0.2s;
-        }
-
-        nav a:hover {
-            color: var(--text-main);
-        }
-
-        .brand {
-            font-weight: 900;
-            font-size: 1.8rem;
-            letter-spacing: -0.5px;
-            background: var(--gradient-text);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* Toggle Button */
-        .theme-toggle {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--glass-border-light);
-            color: var(--text-main);
-            padding: 0.6rem 1.5rem;
-            border-radius: 50px;
-            cursor: pointer;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-
-        .theme-toggle:hover {
-            background: var(--glass-border-light);
-        }
-
-        /* Scroll Reveal */
-        .reveal {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Credits */
-        .credit-card {
-            text-align: center;
-            padding: 2.5rem 2rem;
-        }
-        
-        .role-title {
-            color: var(--accent-glow);
-            font-weight: 800;
-            font-size: 1.1rem;
-            margin-bottom: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+        /* Reveal Animation */
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
     </style>
 </head>
 <body>
 
     <div class="liquid-bg">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
+        <div class="orb orb-1" id="orb-1"></div>
+        <div class="orb orb-2" id="orb-2"></div>
     </div>
 
     <nav>
-        <div style="display: flex; flex-direction: column;">
+        <div style="display: flex; flex-direction: column; align-items: center;">
             <div class="brand">WAYPOINT RIT</div>
-            <span style="font-size: 0.75rem; font-weight: 600; letter-spacing: 1.5px; color: var(--text-muted); margin-top: -5px;">- BY TEAM BINARY 👾</span>
+            <span style="font-size: 0.7rem; font-weight: 600; letter-spacing: 2px; color: var(--text-muted); margin-top: -3px;">- BY TEAM BINARY 👾</span>
         </div>
         
         <div class="nav-links">
             <a href="#home">Prototype</a>
             <a href="#problems">Solutions</a>
+            <a href="#stack">Tech Stack</a>
             <a href="#flow">Architecture</a>
             <a href="#credits">Team</a>
         </div>
@@ -423,166 +204,180 @@
         </button>
     </nav>
 
-    <section id="home" class="slide">
-        <h1 class="reveal">Navigate the Unmapped.</h1>
-        <p class="reveal" style="text-align: center; max-width: 800px; font-size: 1.5rem; margin-bottom: 2rem;">
-            A high-precision, macro-to-micro indoor positioning system powered by OpenCV, Mapbox, and FastAPI.
-        </p>
-        
-        <div class="slider-container glass-panel reveal" id="slider-container">
-            <img src="image_light.jpg" alt="Light Mode UI" class="slider-image back">
-            <img src="image_dark.jpg" alt="Dark Mode UI" class="slider-image front">
+    <section id="home" class="slide" data-color1="rgba(67, 56, 202, 0.4)" data-color2="rgba(192, 38, 211, 0.3)">
+        <div class="slide-content">
+            <h1 class="reveal">Navigate the Unmapped.</h1>
+            <p class="reveal" style="text-align: center; max-width: 800px; margin-bottom: 2rem;">
+                A high-precision, macro-to-micro indoor positioning system powered by OpenCV, Mapbox, and FastAPI.
+            </p>
             
-            <input type="range" min="0" max="100" value="50" class="slider-input" id="slider">
-            
-            <div class="slider-line"></div>
-            
-            <div class="slider-button">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                <svg style="transform: rotate(180deg); margin-left: -10px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            <div class="slider-container glass-panel reveal" id="slider-container">
+                <img src="image_light.jpg" alt="Light Mode UI" class="slider-image back">
+                <img src="image_dark.jpg" alt="Dark Mode UI" class="slider-image front">
+                
+                <input type="range" min="0" max="100" value="50" class="slider-input" id="slider">
+                
+                <div class="slider-line"></div>
+                
+                <div class="slider-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                    <svg style="transform: rotate(180deg); margin-left: -5px;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                </div>
             </div>
         </div>
     </section>
 
-    <section id="problems" class="slide">
-        <h2 class="reveal">System Roadblocks & Solutions</h2>
-        <div class="grid">
-            <div class="card glass-panel reveal">
-                <h3>1. The "GPS Deadzone"</h3>
-                <p>Google Maps brings you to the campus gate, but instantly fails indoors. It cannot route you down a specific corridor.</p>
-                <p><span class="highlight">Solution:</span> Using OpenCV to scan physical QR checkpoints, the app creates an "Indoor GPS" mapping exact (x, y) vectors without satellites.</p>
-            </div>
+    <section id="problems" class="slide" data-color1="rgba(245, 158, 11, 0.25)" data-color2="rgba(225, 29, 72, 0.25)">
+        <div class="slide-content">
+            <h2 class="reveal">System Roadblocks & Solutions</h2>
+            <div class="grid">
+                <div class="card glass-panel reveal">
+                    <h3>1. The "GPS Deadzone"</h3>
+                    <p>Google Maps brings you to the campus gate, but instantly fails indoors. It cannot route you down a specific corridor.</p>
+                    <p><span class="highlight">Solution:</span> Using OpenCV to scan physical QR checkpoints, the app creates an "Indoor GPS" mapping exact (x, y) vectors.</p>
+                </div>
 
-            <div class="card glass-panel reveal">
-                <h3>2. The "Fresher Maze"</h3>
-                <p>New students wander aimlessly trying to find specific labs like the AI Lab or LH-201, increasing campus anxiety.</p>
-                <p><span class="highlight">Solution:</span> The Streamlit macro-to-micro UI allows visual indoor-stepping before walking, creating clear paths.</p>
-            </div>
+                <div class="card glass-panel reveal">
+                    <h3>2. The "Fresher Maze"</h3>
+                    <p>New students wander aimlessly trying to find specific labs like the AI Lab or LH-201, increasing campus anxiety.</p>
+                    <p><span class="highlight">Solution:</span> The Streamlit macro-to-micro UI allows visual indoor-stepping before walking, creating clear paths.</p>
+                </div>
 
-            <div class="card glass-panel reveal">
-                <h3>3. The "Faculty Hunt"</h3>
-                <p>Finding a professor urgently to resolve an issue involves knocking on multiple wrong cabin doors.</p>
-                <p><span class="highlight">Solution:</span> The MySQL relational database maps faculty to live locations. Search their name, and a pin drops on their current cabin.</p>
-            </div>
+                <div class="card glass-panel reveal">
+                    <h3>3. The "Faculty Hunt"</h3>
+                    <p>Finding a professor urgently to resolve an issue involves knocking on multiple wrong cabin doors.</p>
+                    <p><span class="highlight">Solution:</span> The MySQL database maps faculty to live locations. Search their name, and a pin drops on their current cabin.</p>
+                </div>
 
-            <div class="card glass-panel reveal">
-                <h3>4. Dynamic Routing</h3>
-                <p>Printed maps are useless when hackathons or exam seating shifts at the last minute.</p>
-                <p><span class="highlight">Solution:</span> An admin backend running on FastAPI dynamically updates room statuses across the entire web app instantly.</p>
-            </div>
-
-            <div class="card glass-panel reveal">
-                <h3>5. Emergency Access</h3>
-                <p>In emergencies, finding the nearest exit or critical infrastructure is delayed by confusion.</p>
-                <p><span class="highlight">Solution:</span> Clean Figma 2D overlays instantly map restrooms, exits, and safety points based on user proximity.</p>
+                <div class="card glass-panel reveal">
+                    <h3>4. Dynamic Routing</h3>
+                    <p>Printed maps are useless when hackathons or exam seating shifts at the last minute.</p>
+                    <p><span class="highlight">Solution:</span> An admin backend running on FastAPI dynamically updates room statuses across the entire web app instantly.</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <section id="flow" class="slide">
-        <h2 class="reveal">Execution Architecture</h2>
-        <div class="flow-container">
+    <section id="stack" class="slide" data-color1="rgba(52, 211, 153, 0.3)" data-color2="rgba(6, 182, 212, 0.3)">
+        <div class="slide-content">
+            <h2 class="reveal">The Tech Stack</h2>
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+                
+                <div class="card glass-panel reveal">
+                    <h3>01. Core & Backend</h3>
+                    <p><span class="highlight">Python</span> → Main Language</p>
+                    <p><span class="highlight">FastAPI</span> → API Server</p>
+                    <p><span class="highlight">MySQL</span> → Database</p>
+                </div>
+
+                <div class="card glass-panel reveal">
+                    <h3>02. Frontend & Map</h3>
+                    <p><span class="highlight">Streamlit</span> → UI Website</p>
+                    <p><span class="highlight">PyDeck / folium</span> → 3D Map Render</p>
+                    <p><span class="highlight">Mapbox</span> → Map Engine</p>
+                </div>
+
+                <div class="card glass-panel reveal">
+                    <h3>03. Vision & Design</h3>
+                    <p><span class="highlight">OpenCV</span> → QR Detection</p>
+                    <p><span class="highlight">Figma</span> → 2D Floor Plans</p>
+                </div>
+
+                <div class="card glass-panel reveal">
+                    <h3>04. Workflow</h3>
+                    <p><span class="highlight">Git + GitHub</span> → Version Control</p>
+                    <p><span class="highlight">Cloud</span> → Deployment</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="flow" class="slide" data-color1="rgba(124, 58, 237, 0.3)" data-color2="rgba(14, 165, 233, 0.3)">
+        <div class="slide-content">
+            <h2 class="reveal">Execution Architecture</h2>
+            <div class="flow-container">
+                
+                <div class="flow-step glass-panel reveal">
+                    <div class="step-num">01</div>
+                    <div class="flow-content">
+                        <h3>User opens site ➔ 3D RIT Campus</h3>
+                        <p><span class="highlight">The Tech:</span> Streamlit loads `st_folium`. The map is centered on RIT's main coordinates.</p>
+                        <p><span class="highlight">The Look:</span> The user sees the Mapbox 3D buildings showing the whole campus.</p>
+                    </div>
+                </div>
+
+                <div class="flow-step glass-panel reveal">
+                    <div class="step-num">02</div>
+                    <div class="flow-content">
+                        <h3>User searches ➔ "LH Block"</h3>
+                        <p><span class="highlight">The Tech:</span> A search bar is built using `st.text_input("Search Building or Room")`.</p>
+                        <p><span class="highlight">The Logic:</span> The backend takes "LH Block", checks the SQLite/MySQL database, and returns the GPS coordinates for that specific building.</p>
+                    </div>
+                </div>
+
+                <div class="flow-step glass-panel reveal">
+                    <div class="step-num">03</div>
+                    <div class="flow-content">
+                        <h3>Map zooms ➔ Focus on LH Building</h3>
+                        <p><span class="highlight">The Tech:</span> Streamlit automatically updates the Folium map's center coordinates and increases the `zoom_start` level (e.g., from 16 to 19).</p>
+                        <p><span class="highlight">The Look:</span> The map smoothly "flies" over to the LH Block and zooms in close.</p>
+                    </div>
+                </div>
+
+                <div class="flow-step glass-panel reveal">
+                    <div class="step-num">04</div>
+                    <div class="flow-content">
+                        <h3>User clicks ➔ Selects "Floor 2"</h3>
+                        <p><span class="highlight">The Tech:</span> A Streamlit UI element appears (like a dropdown `st.selectbox` or a floating button for floors: G, 1, 2, 3).</p>
+                        <p><span class="highlight">The Logic:</span> When the user clicks "Floor 2", Streamlit updates its `st.session_state` to switch from the "Campus View" to the "Inside View".</p>
+                    </div>
+                </div>
+
+                <div class="flow-step glass-panel reveal">
+                    <div class="step-num">05</div>
+                    <div class="flow-content">
+                        <h3>Rooms appear ➔ LH201, LH202, AI Lab</h3>
+                        <p><span class="highlight">The Tech:</span> The 3D map hides. Folium's `ImageOverlay` takes over, projecting the clean 2D Figma floor plan of Floor 2.</p>
+                        <p><span class="highlight">The Look:</span> The screen populates with interactive markers (pins). If they search for your specific branch (AIML-B), the map highlights LH201.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="credits" class="slide" data-color1="rgba(250, 204, 21, 0.2)" data-color2="rgba(79, 70, 229, 0.3)">
+        <div class="slide-content">
+            <h2 class="reveal">The Engineering Squad</h2>
+            <p class="reveal" style="text-align: center; margin-bottom: 3rem; font-family: 'Plus Jakarta Sans'; font-size: 1.2rem; font-weight: 800; letter-spacing: 2px;">
+                <span style="color: var(--accent-glow);">TEAM BINARY 👾</span> | RIT
+            </p>
             
-            <div class="flow-step glass-panel reveal">
-                <div class="step-num">01</div>
-                <div>
-                    <h3>Macro Initialization</h3>
-                    <p>Streamlit loads `st_folium`. The user sees the Mapbox 3D buildings covering the entire RIT campus.</p>
+            <div class="grid">
+                <div class="glass-panel reveal" style="text-align: center;">
+                    <h3>VISHNUPRIYAN <br><span style="font-size: 0.9rem; color: var(--text-muted); font-weight: 400;">AIML B</span></h3>
+                    <p class="highlight" style="margin-top: 1rem; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">Backend Architecture</p>
+                    <p style="font-size: 0.9rem;">FastAPI, MySQL, API</p>
                 </div>
-            </div>
 
-            <div class="flow-arrow reveal">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="12" y1="5" x2="12" y2="19"></line>
-                    <polyline points="19 12 12 19 5 12"></polyline>
-                </svg>
-            </div>
-
-            <div class="flow-step glass-panel reveal">
-                <div class="step-num">02</div>
-                <div>
-                    <h3>Database Spatial Query</h3>
-                    <p>User searches "LH Block". The FastAPI backend queries the MySQL database and returns exact GPS bounding coordinates.</p>
+                <div class="glass-panel reveal" style="text-align: center;">
+                    <h3>PARTHIBAN <br><span style="font-size: 0.9rem; color: var(--text-muted); font-weight: 400;">AIML B</span></h3>
+                    <p class="highlight" style="margin-top: 1rem; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">Frontend Integration</p>
+                    <p style="font-size: 0.9rem;">Streamlit, Session States</p>
                 </div>
-            </div>
 
-            <div class="flow-arrow reveal">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="12" y1="5" x2="12" y2="19"></line>
-                    <polyline points="19 12 12 19 5 12"></polyline>
-                </svg>
-            </div>
-
-            <div class="flow-step glass-panel reveal">
-                <div class="step-num">03</div>
-                <div>
-                    <h3>Camera Animation</h3>
-                    <p>Streamlit updates the Folium map center. The camera smoothly flies and zooms directly to the LH Block.</p>
+                <div class="glass-panel reveal" style="text-align: center;">
+                    <h3>LEELA KRISHNA <br><span style="font-size: 0.9rem; color: var(--text-muted); font-weight: 400;">AIML B</span></h3>
+                    <p class="highlight" style="margin-top: 1rem; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">Spatial Design</p>
+                    <p style="font-size: 0.9rem;">Mapbox 3D, Figma</p>
                 </div>
-            </div>
 
-            <div class="flow-arrow reveal">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="12" y1="5" x2="12" y2="19"></line>
-                    <polyline points="19 12 12 19 5 12"></polyline>
-                </svg>
-            </div>
-
-            <div class="flow-step glass-panel reveal">
-                <div class="step-num">04</div>
-                <div>
-                    <h3>Micro Transition</h3>
-                    <p>User selects "Floor 2". Streamlit session state shifts, hiding the 3D map and loading the high-fidelity 2D Figma floor plan.</p>
+                <div class="glass-panel reveal" style="text-align: center;">
+                    <h3>SUSINDRA <br><span style="font-size: 0.9rem; color: var(--text-muted); font-weight: 400;">VLSI B</span></h3>
+                    <p class="highlight" style="margin-top: 1rem; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">Computer Vision</p>
+                    <p style="font-size: 0.9rem;">OpenCV, QR Anchoring</p>
                 </div>
-            </div>
-
-            <div class="flow-arrow reveal">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="12" y1="5" x2="12" y2="19"></line>
-                    <polyline points="19 12 12 19 5 12"></polyline>
-                </svg>
-            </div>
-
-            <div class="flow-step glass-panel reveal">
-                <div class="step-num">05</div>
-                <div>
-                    <h3>Live Interactive Markers</h3>
-                    <p>The screen populates with interactive pins routing directly to LH-201, LH-202, and the AIML Lab.</p>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <section id="credits" class="slide">
-        <h2 class="reveal">The Engineering Squad</h2>
-        <p class="reveal" style="text-align: center; margin-bottom: 4rem; font-family: 'Plus Jakarta Sans'; font-size: 1.5rem; font-weight: 800; letter-spacing: 2px;">
-            <span class="highlight">TEAM BINARY 👾</span>   |   RAJALAKSHMI INSTITUTE OF TECHNOLOGY
-        </p>
-        
-        <div class="grid">
-            <div class="card glass-panel credit-card reveal">
-                <h3>VISHNUPRIYAN - AIML B</h3>
-                <p class="role-title">Backend Architecture</p>
-                <p>FastAPI, MySQL Integration, API Development</p>
-            </div>
-
-            <div class="card glass-panel credit-card reveal">
-                <h3>PARTHIBAN - AIML B</h3>
-                <p class="role-title">Frontend Integration</p>
-                <p>Streamlit Dashboard, Session States</p>
-            </div>
-
-            <div class="card glass-panel credit-card reveal">
-                <h3>LEELA KRISHNA - AIML B</h3>
-                <p class="role-title">Spatial Design</p>
-                <p>Mapbox 3D Engine, Figma Overlays</p>
-            </div>
-
-            <div class="card glass-panel credit-card reveal">
-                <h3>SUSINDRA - VLSI B</h3>
-                <p class="role-title">Computer Vision</p>
-                <p>OpenCV Processing, QR Anchoring</p>
             </div>
         </div>
     </section>
@@ -620,21 +415,36 @@
             }
         });
 
-        // 3. SCROLL REVEAL LOGIC
-        function revealElements() {
-            const reveals = document.querySelectorAll('.reveal');
+        // 3. SCROLL REVEAL & DYNAMIC BACKGROUND COLOR LOGIC
+        const orb1 = document.getElementById('orb-1');
+        const orb2 = document.getElementById('orb-2');
+        const sections = document.querySelectorAll('.slide');
+
+        function handleScroll() {
             const windowHeight = window.innerHeight;
-            
+            const scrollY = window.scrollY;
+
+            // Reveal elements
+            const reveals = document.querySelectorAll('.reveal');
             reveals.forEach(reveal => {
                 const elementTop = reveal.getBoundingClientRect().top;
-                if (elementTop < windowHeight - 100) {
-                    reveal.classList.add('active');
+                if (elementTop < windowHeight - 50) reveal.classList.add('active');
+            });
+
+            // Change orb colors based on current section
+            sections.forEach(sec => {
+                const secTop = sec.offsetTop - (windowHeight / 2);
+                const secBottom = secTop + sec.offsetHeight;
+                
+                if (scrollY >= secTop && scrollY < secBottom) {
+                    orb1.style.background = sec.getAttribute('data-color1');
+                    orb2.style.background = sec.getAttribute('data-color2');
                 }
             });
         }
 
-        window.addEventListener('scroll', revealElements);
-        revealElements();
+        window.addEventListener('scroll', handleScroll);
+        handleScroll(); // Trigger on load
     </script>
 </body>
 </html>
