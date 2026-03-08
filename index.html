@@ -53,7 +53,7 @@
             overflow-x: hidden; 
         }
 
-        /* --- LIQUID BACKGROUND ANIMATION --- */
+        /* --- HIGH-MOTION & SLOWER INTENSITY LIQUID BACKGROUND --- */
         .liquid-bg {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -63,18 +63,36 @@
 
         .orb {
             position: absolute; border-radius: 50%;
-            filter: blur(120px); opacity: 0.6;
-            animation: float 25s infinite ease-in-out alternate;
-            transition: background 1.5s ease-in-out; /* Smooth color transition */
+            filter: blur(100px); 
+            transition: background 1.5s ease-in-out; 
         }
 
-        .orb-1 { width: 60vw; height: 60vw; max-width: 800px; max-height: 800px; top: -10%; left: -10%; }
-        .orb-2 { width: 50vw; height: 50vw; max-width: 700px; max-height: 700px; bottom: -10%; right: -10%; animation-delay: -5s; }
+        /* Slower, graceful animation */
+        .orb-1 { 
+            width: 60vw; height: 60vw; max-width: 800px; max-height: 800px; 
+            top: -10%; left: -10%; 
+            animation: float1 20s infinite ease-in-out alternate;
+        }
+        
+        .orb-2 { 
+            width: 50vw; height: 50vw; max-width: 700px; max-height: 700px; 
+            bottom: -10%; right: -10%; 
+            animation: float2 25s infinite ease-in-out alternate-reverse; 
+        }
 
-        @keyframes float {
-            0% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(10vw, 5vh) scale(1.1); }
-            100% { transform: translate(-5vw, 10vh) scale(0.9); }
+        /* Dynamic Keyframes: Slow movement + scale + opacity changes */
+        @keyframes float1 {
+            0% { transform: translate(0, 0) scale(0.8); opacity: 0.3; }
+            33% { transform: translate(30vw, 15vh) scale(1.4); opacity: 0.9; }
+            66% { transform: translate(10vw, 40vh) scale(0.9); opacity: 0.4; }
+            100% { transform: translate(-15vw, 10vh) scale(1.5); opacity: 0.9; }
+        }
+
+        @keyframes float2 {
+            0% { transform: translate(0, 0) scale(1.3); opacity: 0.8; }
+            33% { transform: translate(-30vw, -20vh) scale(0.8); opacity: 0.3; }
+            66% { transform: translate(-45vw, 10vh) scale(1.4); opacity: 0.9; }
+            100% { transform: translate(-15vw, -15vh) scale(0.9); opacity: 0.4; }
         }
 
         /* --- TYPOGRAPHY --- */
@@ -357,25 +375,25 @@
             <div class="grid">
                 <div class="glass-panel reveal" style="text-align: center;">
                     <h3>VISHNUPRIYAN <br><span style="font-size: 0.9rem; color: var(--text-muted); font-weight: 400;">AIML B</span></h3>
-                    <p class="highlight" style="margin-top: 1rem; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">Backend Architecture</p>
+                    <p class="highlight" style="margin-top: 1rem; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">TEAM LEADER</p>
                     <p style="font-size: 0.9rem;">FastAPI, MySQL, API</p>
                 </div>
 
                 <div class="glass-panel reveal" style="text-align: center;">
                     <h3>PARTHIBAN <br><span style="font-size: 0.9rem; color: var(--text-muted); font-weight: 400;">AIML B</span></h3>
-                    <p class="highlight" style="margin-top: 1rem; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">Frontend Integration</p>
+                    <p class="highlight" style="margin-top: 1rem; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">TEAM MEMBER</p>
                     <p style="font-size: 0.9rem;">Streamlit, Session States</p>
                 </div>
 
                 <div class="glass-panel reveal" style="text-align: center;">
                     <h3>LEELA KRISHNA <br><span style="font-size: 0.9rem; color: var(--text-muted); font-weight: 400;">AIML B</span></h3>
-                    <p class="highlight" style="margin-top: 1rem; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">Spatial Design</p>
+                    <p class="highlight" style="margin-top: 1rem; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">TEAM MEMBER</p>
                     <p style="font-size: 0.9rem;">Mapbox 3D, Figma</p>
                 </div>
 
                 <div class="glass-panel reveal" style="text-align: center;">
                     <h3>SUSINDRA <br><span style="font-size: 0.9rem; color: var(--text-muted); font-weight: 400;">VLSI B</span></h3>
-                    <p class="highlight" style="margin-top: 1rem; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">Computer Vision</p>
+                    <p class="highlight" style="margin-top: 1rem; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">TEAM MEMBER</p>
                     <p style="font-size: 0.9rem;">OpenCV, QR Anchoring</p>
                 </div>
             </div>
