@@ -6,7 +6,7 @@
     <title>WAYPOINT RIT PRESENTATION</title>
     <style>
         /* Premium Tech Typography */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@400;600;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@400;600;800;900&family=Space+Mono:wght@400;700&display=swap');
         
         :root {
             /* GLOBAL THEME VARS */
@@ -19,9 +19,11 @@
             --text-muted: #94a3b8;
             --bg-base: #030712;
             
-            /* NEW AURORA GRADIENT & ACCENTS */
+            /* AURORA GRADIENT & ACCENTS */
             --accent-glow: #38bdf8;
             --gradient-text: linear-gradient(135deg, #38bdf8, #c084fc);
+            --error-glow: #fb7185;
+            --success-glow: #10b981;
         }
 
         body.light-mode {
@@ -36,168 +38,285 @@
             
             --accent-glow: #0284c7;
             --gradient-text: linear-gradient(135deg, #0284c7, #9333ea);
+            --error-glow: #e11d48;
+            --success-glow: #059669;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            transition: color 0.3s ease, background-color 0.3s ease;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; transition: color 0.3s ease, background-color 0.3s ease; }
 
         body {
-            background-color: var(--bg-base);
-            color: var(--text-main);
-            font-family: 'Inter', sans-serif;
-            line-height: 1.7;
-            overflow-x: hidden; 
+            background-color: var(--bg-base); color: var(--text-main);
+            font-family: 'Inter', sans-serif; line-height: 1.7;
+            overflow-x: hidden; cursor: none; 
         }
 
-        /* --- HIGH-MOTION & SLOWER INTENSITY LIQUID BACKGROUND --- */
-        .liquid-bg {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: -1; overflow: hidden;
-            background: var(--bg-base);
+        /* --- HYPER-RESPONSIVE SCI-FI CURSOR --- */
+        .cursor-dot {
+            width: 8px; height: 8px; background: var(--accent-glow);
+            position: fixed; z-index: 9999; pointer-events: none; 
+            transform: translate(-50%, -50%) rotate(45deg);
+            box-shadow: 0 0 10px var(--accent-glow), 0 0 20px var(--accent-glow);
+            transition: width 0.2s, height 0.2s, background 0.2s, transform 0.2s, border 0.2s;
         }
+        .cursor-ring {
+            width: 40px; height: 40px; position: fixed; z-index: 9998;
+            pointer-events: none; transform: translate(-50%, -50%);
+            border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 50%;
+            transition: width 0.2s, height 0.2s, background 0.2s, border-color 0.2s;
+        }
+        .cursor-ring::after {
+            content: ''; position: absolute; top: -4px; left: 50%; width: 2px; height: 46px;
+            background: linear-gradient(to bottom, var(--accent-glow) 15%, transparent 15%, transparent 85%, var(--accent-glow) 85%);
+            transform: translateX(-50%); transition: all 0.2s ease;
+        }
+        .cursor-ring::before {
+            content: ''; position: absolute; top: 50%; left: -4px; width: 46px; height: 2px;
+            background: linear-gradient(to right, var(--accent-glow) 15%, transparent 15%, transparent 85%, var(--accent-glow) 85%);
+            transform: translateY(-50%); transition: all 0.2s ease;
+        }
+        .cursor-ring.hovering { 
+            width: 55px; height: 55px; background: rgba(56, 189, 248, 0.08); 
+            border-color: var(--accent-glow); animation: target-lock-spin 4s linear infinite; 
+        }
+        .cursor-ring.hovering::after { height: 63px; top: -5px; }
+        .cursor-ring.hovering::before { width: 63px; left: -5px; }
+        .cursor-dot.hovering { background: transparent; border: 2px solid var(--accent-glow); transform: translate(-50%, -50%) rotate(0deg) scale(1.3); box-shadow: none; }
+        @keyframes target-lock-spin { 0% { transform: translate(-50%, -50%) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg); } }
 
-        .orb {
-            position: absolute; border-radius: 50%;
-            filter: blur(100px); 
-            transition: background 1.5s ease-in-out; 
-        }
+        /* --- HIGH-MOTION LIQUID BACKGROUND --- */
+        .liquid-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2; overflow: hidden; background: var(--bg-base); }
+        .orb { position: absolute; border-radius: 50%; filter: blur(100px); transition: background 1.5s ease-in-out, transform 0.1s ease-out; will-change: transform; }
+        .orb-1 { width: 60vw; height: 60vw; max-width: 800px; max-height: 800px; top: -10%; left: -10%; animation: float1 20s infinite ease-in-out alternate; }
+        .orb-2 { width: 50vw; height: 50vw; max-width: 700px; max-height: 700px; bottom: -10%; right: -10%; animation: float2 25s infinite ease-in-out alternate-reverse; }
+        @keyframes float1 { 0% { transform: translate(0, 0) scale(0.8); opacity: 0.3; } 33% { transform: translate(30vw, 15vh) scale(1.4); opacity: 0.9; } 66% { transform: translate(10vw, 40vh) scale(0.9); opacity: 0.4; } 100% { transform: translate(-15vw, 10vh) scale(1.5); opacity: 0.9; } }
+        @keyframes float2 { 0% { transform: translate(0, 0) scale(1.3); opacity: 0.8; } 33% { transform: translate(-30vw, -20vh) scale(0.8); opacity: 0.3; } 66% { transform: translate(-45vw, 10vh) scale(1.4); opacity: 0.9; } 100% { transform: translate(-15vw, -15vh) scale(0.9); opacity: 0.4; } }
 
-        /* Slower, graceful animation */
-        .orb-1 { 
-            width: 60vw; height: 60vw; max-width: 800px; max-height: 800px; 
-            top: -10%; left: -10%; 
-            animation: float1 20s infinite ease-in-out alternate;
-        }
-        
-        .orb-2 { 
-            width: 50vw; height: 50vw; max-width: 700px; max-height: 700px; 
-            bottom: -10%; right: -10%; 
-            animation: float2 25s infinite ease-in-out alternate-reverse; 
-        }
+        /* --- HERO VIDEO BACKGROUND --- */
+        .hero-video-wrapper { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; }
+        .hero-video { width: 100%; height: 100%; object-fit: cover; opacity: 0.3; filter: contrast(1.2) brightness(0.8) saturate(1.2); transition: opacity 0.5s ease; }
+        body.light-mode .hero-video { opacity: 0.15; filter: contrast(1.1) brightness(1.2); }
+        .hero-video-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(3, 7, 18, 0.1) 50%, var(--bg-base) 100%); }
+        body.light-mode .hero-video-overlay { background: linear-gradient(to bottom, rgba(248, 250, 252, 0.1) 50%, var(--bg-base) 100%); }
 
-        /* Dynamic Keyframes: Slow movement + scale + opacity changes */
-        @keyframes float1 {
-            0% { transform: translate(0, 0) scale(0.8); opacity: 0.3; }
-            33% { transform: translate(30vw, 15vh) scale(1.4); opacity: 0.9; }
-            66% { transform: translate(10vw, 40vh) scale(0.9); opacity: 0.4; }
-            100% { transform: translate(-15vw, 10vh) scale(1.5); opacity: 0.9; }
-        }
-
-        @keyframes float2 {
-            0% { transform: translate(0, 0) scale(1.3); opacity: 0.8; }
-            33% { transform: translate(-30vw, -20vh) scale(0.8); opacity: 0.3; }
-            66% { transform: translate(-45vw, 10vh) scale(1.4); opacity: 0.9; }
-            100% { transform: translate(-15vw, -15vh) scale(0.9); opacity: 0.4; }
-        }
-
-        /* --- TYPOGRAPHY --- */
+        /* --- TYPOGRAPHY & HERO TITLE CONTAINER --- */
         h1, h2, h3, .step-num, .brand { font-family: 'Plus Jakarta Sans', sans-serif; }
         
-        h1 {
-            font-size: clamp(3rem, 6vw, 6.5rem); 
-            font-weight: 900; text-align: center; letter-spacing: -2px;
-            background: var(--gradient-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            margin-bottom: 1.5rem; line-height: 1.1;
+        .title-video-banner {
+            position: relative; display: inline-flex; justify-content: center; align-items: center;
+            padding: 1.5rem 3.5rem; margin-bottom: 1.5rem; border-radius: 20px; overflow: hidden;
+            border: 1px solid var(--glass-border-light); box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4); transition: transform 0.3s ease;
         }
+        .title-video-banner:hover { transform: translateY(-5px); border-color: var(--accent-glow); box-shadow: 0 20px 50px rgba(56, 189, 248, 0.25); }
+        .hero-banner-video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; opacity: 0.85; }
+        .hero-banner-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; background: linear-gradient(135deg, rgba(3, 7, 18, 0.85), rgba(3, 7, 18, 0.6)); backdrop-filter: blur(4px); }
+        body.light-mode .hero-banner-overlay { background: linear-gradient(135deg, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.6)); }
 
-        h2 {
-            font-size: clamp(2rem, 4vw, 3.5rem);
-            font-weight: 800; text-align: center; margin-bottom: 3rem; letter-spacing: -1px;
-        }
+        h1 { font-size: clamp(2.5rem, 5vw, 5.5rem); font-weight: 900; text-align: center; letter-spacing: -2px; background: var(--gradient-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; line-height: 1.1; position: relative; z-index: 3; }
+        .terminal-blink { color: var(--accent-glow); -webkit-text-fill-color: var(--accent-glow); animation: blink-cursor 1s step-end infinite; }
+        @keyframes blink-cursor { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
+        h2 { font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 800; text-align: center; margin-bottom: 3rem; letter-spacing: -1px; }
         h3 { font-size: 1.5rem; margin-bottom: 1rem; font-weight: 800; color: var(--text-main); }
-        p { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 1rem; }
-        
-        .highlight { font-weight: 700; color: var(--accent-glow); }
+        p { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 1rem; position: relative; z-index: 2; }
+        .highlight { font-weight: 700; color: var(--accent-glow); transition: text-shadow 0.3s; }
 
-        /* --- LAYOUT & CARDS --- */
-        .slide {
-            min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
-            align-items: center; padding: 8rem 2rem 4rem 2rem; position: relative; z-index: 10;
-        }
-
-        .slide-content { width: 100%; max-width: 1300px; display: flex; flex-direction: column; align-items: center; }
-
-        .glass-panel {
-            background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border-dark); border-top: 1px solid var(--glass-border-light);
-            border-left: 1px solid var(--glass-border-light); border-radius: 24px;
-            box-shadow: var(--glass-shadow); padding: 2.5rem;
-            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .glass-panel:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent-glow);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
+        /* --- LAYOUT & 3D CARDS --- */
+        .slide { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 8rem 2rem 4rem 2rem; position: relative; z-index: 10; width: 100%;}
+        .slide-content { width: 100%; max-width: 1300px; display: flex; flex-direction: column; align-items: center; perspective: 1000px; z-index: 5; position: relative;}
+        .glass-panel { background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--glass-border-dark); border-top: 1px solid var(--glass-border-light); border-left: 1px solid var(--glass-border-light); border-radius: 24px; box-shadow: var(--glass-shadow); padding: 2.5rem; transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.1s ease-out; transform-style: preserve-3d; will-change: transform; }
+        .glass-panel:hover { border-color: var(--accent-glow); box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4); z-index: 20; }
+        .glass-panel h3, .glass-panel p { transform: translateZ(30px); transition: transform 0.3s ease; }
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; width: 100%; }
 
-        /* --- SLIDER --- */
-        .slider-container {
-            position: relative; width: 100%; max-width: 1000px; aspect-ratio: 16 / 9;
-            border-radius: 20px; overflow: hidden; margin-top: 3rem; --position: 50%; padding: 0;
-        }
+        /* --- X-RAY VIEWFINDER SLIDER --- */
+        .slider-wrapper { position: relative; width: 100%; max-width: 1000px; margin-top: 3rem; }
+        .slider-hud { position: absolute; top: -35px; left: 50%; transform: translateX(-50%); font-family: 'Space Mono', monospace; font-size: 0.85rem; color: var(--accent-glow); letter-spacing: 2px; text-shadow: 0 0 10px var(--accent-glow); z-index: 20; background: rgba(3, 7, 18, 0.7); padding: 4px 12px; border-radius: 4px; border: 1px solid var(--accent-glow); }
+        .slider-container { position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 20px; overflow: hidden; padding: 0; cursor: ew-resize !important; }
+        .slider-wrapper::before, .slider-wrapper::after, .slider-container::before, .slider-container::after { content: ''; position: absolute; width: 40px; height: 40px; border: 2px solid var(--accent-glow); z-index: 15; pointer-events: none; opacity: 0.6; }
+        .slider-wrapper::before { top: -10px; left: -10px; border-right: none; border-bottom: none; }
+        .slider-wrapper::after { top: -10px; right: -10px; border-left: none; border-bottom: none; }
+        .slider-container::before { bottom: -10px; left: -10px; border-right: none; border-top: none; }
+        .slider-container::after { bottom: -10px; right: -10px; border-left: none; border-top: none; }
         .slider-image { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; pointer-events: none; }
         .slider-image.front { clip-path: polygon(0 0, var(--position) 0, var(--position) 100%, 0 100%); }
-        .slider-input { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 10; }
-        .slider-line { position: absolute; top: 0; bottom: 0; left: var(--position); width: 3px; background: #fff; transform: translateX(-50%); pointer-events: none; z-index: 5; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
-        .slider-button { position: absolute; top: 50%; left: var(--position); transform: translate(-50%, -50%); width: 40px; height: 40px; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border-radius: 50%; display: flex; justify-content: center; align-items: center; pointer-events: none; z-index: 5; color: #000; box-shadow: 0 0 15px rgba(0,0,0,0.3); }
+        .slider-input { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: ew-resize !important; z-index: 10; }
+        .slider-line { position: absolute; top: 0; bottom: 0; left: var(--position); width: 3px; background: #fff; transform: translateX(-50%); pointer-events: none; z-index: 5; box-shadow: 0 0 15px rgba(56, 189, 248, 0.8); }
+        .slider-button { position: absolute; top: 50%; left: var(--position); transform: translate(-50%, -50%); width: 40px; height: 40px; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border-radius: 50%; display: flex; justify-content: center; align-items: center; pointer-events: none; z-index: 5; color: #000; box-shadow: 0 0 20px rgba(56, 189, 248, 0.5); }
 
-        /* --- EXECUTION FLOW --- */
-        .flow-container { display: flex; flex-direction: column; width: 100%; max-width: 900px; gap: 1.5rem; }
-        .flow-step { display: flex; align-items: flex-start; padding: 2.5rem; gap: 2rem; }
-        .step-num {
-            font-size: 3.5rem; line-height: 1; font-weight: 900;
-            background: var(--gradient-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            min-width: 80px; text-align: center;
-        }
-        .flow-content h3 { font-size: 1.6rem; margin-bottom: 0.8rem; border-bottom: 1px solid var(--glass-border-light); padding-bottom: 0.5rem; }
+        /* --- ERROR RESOLUTION CARDS --- */
+        .problem-card { border-color: rgba(225, 29, 72, 0.3); transition: all 0.4s ease; }
+        .problem-card:hover { border-color: var(--accent-glow); }
+        .status-badge { font-family: 'Space Mono', monospace; font-size: 0.75rem; font-weight: 700; padding: 4px 10px; border-radius: 4px; display: inline-block; margin-bottom: 1.5rem; background: rgba(225, 29, 72, 0.15); color: var(--error-glow); border: 1px solid var(--error-glow); transition: all 0.4s ease; }
+        .problem-card:hover .status-badge { background: rgba(56, 189, 248, 0.15); color: var(--accent-glow); border-color: var(--accent-glow); }
+        .solution-block { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px dashed var(--glass-border-light); filter: blur(4px); opacity: 0.5; transition: all 0.5s ease; }
+        .problem-card:hover .solution-block { filter: blur(0); opacity: 1; }
+
+        /* --- INTERACTIVE TECH ECOSYSTEM --- */
+        .ecosystem-container { display: flex; gap: 3rem; width: 100%; max-width: 1100px; align-items: stretch; }
+        .tool-column { display: flex; flex-direction: column; gap: 1rem; flex: 0 0 350px; }
+        .tool-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border-light); color: var(--text-main); padding: 1.2rem 1.5rem; border-radius: 16px; cursor: none; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: 1.1rem; display: flex; align-items: center; gap: 15px; transition: all 0.3s ease; text-align: left; will-change: transform; backdrop-filter: blur(10px); }
+        body.light-mode .tool-btn { background: rgba(255,255,255,0.6); }
+        .tool-btn:hover, .tool-btn.active { background: rgba(56, 189, 248, 0.1); border-color: var(--accent-glow); box-shadow: 0 0 20px rgba(56, 189, 248, 0.2); transform: translateX(10px); }
+        .tool-num { font-family: 'Space Mono', monospace; color: var(--accent-glow); font-size: 0.9rem; font-weight: 400; opacity: 0.8;}
+        .diagram-column { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 2.5rem; position: relative; }
+        .flow-stage { display: flex; justify-content: center; align-items: center; width: 100%; min-height: 50px; position: relative; }
+        .map-node { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border-dark); padding: 12px 24px; border-radius: 12px; font-family: 'Space Mono', monospace; font-size: 0.95rem; font-weight: 700; color: var(--text-muted); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); opacity: 0.5; z-index: 2; }
+        .map-node.active { opacity: 1; border-color: var(--accent-glow); color: var(--accent-glow); box-shadow: 0 0 20px rgba(56, 189, 248, 0.3); transform: scale(1.1); background: rgba(3, 7, 18, 0.8); }
+        .flow-line { background: rgba(255,255,255,0.05); transition: all 0.3s ease; position: relative; overflow: hidden; z-index: 1;}
+        body.light-mode .flow-line { background: rgba(0,0,0,0.1); }
+        .flow-line.vertical { width: 2px; height: 50px; margin: 0 auto; }
+        .flow-line.horizontal { height: 2px; position: absolute; }
+        .flow-line.active { background: rgba(56, 189, 248, 0.2); }
+        .flow-line.active::after { content: ''; position: absolute; top: 0; left: 0; background: var(--accent-glow); box-shadow: 0 0 10px var(--accent-glow); }
+        .flow-line.vertical.active::after { width: 100%; height: 50%; animation: flow-vert 1s linear infinite; }
+        .flow-line.horizontal.active::after { height: 100%; width: 50%; animation: flow-horz 1s linear infinite alternate; }
+        @keyframes flow-vert { 0% { transform: translateY(-100%); } 100% { transform: translateY(200%); } }
+        @keyframes flow-horz { 0% { transform: translateX(-50%); } 100% { transform: translateX(150%); } }
+        .tool-hud { margin-top: 3rem; padding-top: 2rem; border-top: 1px dashed var(--glass-border-light); min-height: 140px; }
+        #hud-title { color: var(--accent-glow); font-family: 'Space Mono', monospace; font-size: 1.1rem; margin-bottom: 0.8rem; text-transform: uppercase; }
+        #hud-desc { font-size: 1rem; line-height: 1.6; color: var(--text-main); margin: 0; }
+
+        /* --- INTERACTIVE TIMELINE TRACER --- */
+        .timeline-wrapper { display: flex; width: 100%; max-width: 900px; position: relative; }
+        .timeline-track { position: absolute; left: 62px; top: 50px; bottom: 50px; width: 3px; background: var(--glass-border-light); border-radius: 3px; z-index: 1; }
+        .timeline-fill { position: absolute; top: 0; left: 0; width: 100%; height: 0%; background: var(--accent-glow); border-radius: 3px; box-shadow: 0 0 15px var(--accent-glow); transition: height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
+        .flow-container { display: flex; flex-direction: column; width: 100%; gap: 1.5rem; position: relative; z-index: 2;}
+        .flow-step { display: flex; align-items: flex-start; padding: 2.5rem; gap: 2.5rem; border: 1px solid transparent; transition: all 0.3s ease; }
+        .step-num { font-size: 3.5rem; line-height: 1; font-weight: 900; background: var(--text-muted); -webkit-background-clip: text; -webkit-text-fill-color: transparent; min-width: 80px; text-align: center; transition: all 0.4s ease; background-size: 200% auto; }
+        .flow-content { flex: 1; opacity: 0.8; transition: opacity 0.3s ease; }
+        .flow-content h3 { font-size: 1.6rem; margin-bottom: 0.8rem; border-bottom: 1px solid var(--glass-border-light); padding-bottom: 0.5rem; transition: border-color 0.3s ease;}
         .flow-content p { margin-bottom: 0.5rem; font-size: 1.05rem; }
+        .flow-step:hover { background: var(--glass-bg); border-color: var(--accent-glow); transform: translateX(10px); }
+        .flow-step:hover .flow-content { opacity: 1; }
+        .flow-step:hover .flow-content h3 { border-color: var(--accent-glow); }
+        .step-num.active-node { background: var(--gradient-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.6)); transform: scale(1.1); }
 
-        /* --- NAVIGATION --- */
-        nav {
-            position: fixed; top: 0; width: 100%; padding: 1rem 3rem;
-            background: rgba(3, 7, 18, 0.7); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border-bottom: 1px solid var(--glass-border-dark);
-            display: flex; justify-content: space-between; align-items: center; z-index: 100;
+        /* --- THE GPS DEADZONE MINI-GAME (ADVANCED RIT MAP) --- */
+        .game-wrapper { width: 100%; max-width: 900px; display: flex; flex-direction: column; align-items: center; margin-top: 1rem;}
+        .game-board {
+            position: relative; width: 100%; height: 500px; background-color: #030712; border-radius: 20px;
+            overflow: hidden; border: 1px solid var(--glass-border-light);
+            background-image: linear-gradient(rgba(56, 189, 248, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(56, 189, 248, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px; box-shadow: inset 0 0 50px rgba(0,0,0,0.8);
+            --mouse-x: 50%; --mouse-y: 50%; cursor: crosshair !important;
         }
+        
+        /* The Flashlight Mask */
+        .game-flashlight {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle 140px at var(--mouse-x) var(--mouse-y), transparent 0%, rgba(3, 7, 18, 0.98) 100%);
+            pointer-events: none; z-index: 5; transition: background 0.8s ease;
+        }
+        
+        .game-ui {
+            position: absolute; top: 20px; left: 20px; right: 20px; display: flex; justify-content: space-between; align-items: flex-start;
+            font-family: 'Space Mono', monospace; font-size: 1rem; color: var(--accent-glow); z-index: 10; pointer-events: none;
+            background: rgba(3, 7, 18, 0.8); padding: 10px 20px; border-radius: 8px; border: 1px solid var(--glass-border-dark);
+        }
+        
+        #game-target { font-weight: bold; letter-spacing: 1px; }
+        #game-status { color: var(--text-muted); font-size: 0.85rem; text-align: right;}
+
+        /* The RIT Map Rooms */
+        .game-room {
+            position: absolute; width: 24px; height: 24px; border: 2px solid var(--accent-glow);
+            transform: translate(-50%, -50%); border-radius: 4px; z-index: 2; 
+            background: rgba(3, 7, 18, 0.6); display: flex; justify-content: center; align-items: center;
+            transition: all 0.2s;
+        }
+        .game-room::before { content: ''; width: 6px; height: 6px; background: var(--accent-glow); border-radius: 50%; opacity: 0.5;}
+        
+        /* Room Name Tags - Hidden by the flashlight mask until revealed */
+        .room-label {
+            position: absolute; top: -35px; white-space: nowrap; font-family: 'Space Mono', monospace;
+            font-size: 0.8rem; color: var(--accent-glow); font-weight: bold; letter-spacing: 1px;
+            background: rgba(3, 7, 18, 0.95); padding: 4px 10px; border-radius: 4px; border: 1px solid rgba(56, 189, 248, 0.5);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5); pointer-events: none; transition: all 0.3s;
+        }
+
+        /* Success & Error States */
+        .game-room.found {
+            border-color: var(--success-glow); background: rgba(16, 185, 129, 0.2);
+            box-shadow: 0 0 20px var(--success-glow); transform: translate(-50%, -50%) scale(1.1); pointer-events: none;
+        }
+        .game-room.found::before { background: var(--success-glow); opacity: 1; }
+        .game-room.found .room-label { color: var(--success-glow); border-color: var(--success-glow); }
+        
+        .game-room.error { border-color: var(--error-glow); animation: shake 0.4s; }
+        .game-room.error .room-label { color: var(--error-glow); border-color: var(--error-glow); }
+
+        @keyframes shake {
+            0%, 100% {transform: translate(-50%, -50%) rotate(0deg);}
+            25% {transform: translate(-55%, -50%) rotate(-5deg);}
+            75% {transform: translate(-45%, -50%) rotate(5deg);}
+        }
+
+        /* Victory State */
+        .game-board.victory { border-color: var(--success-glow); box-shadow: 0 0 40px rgba(16, 185, 129, 0.3); }
+        .game-board.victory .game-flashlight { background: transparent; } /* Lights turn completely on */
+        .game-board.victory .game-ui { border-color: var(--success-glow); }
+
+        /* Sonar Ping Effects */
+        .sonar-ping { position: absolute; width: 10px; height: 10px; border-radius: 50%; pointer-events: none; transform: translate(-50%, -50%); animation: ping-anim 1s ease-out forwards; z-index: 1; }
+        .ping-green { border: 2px solid var(--success-glow); }
+        .ping-red { border: 2px solid var(--error-glow); }
+        @keyframes ping-anim { 0% { width: 0; height: 0; opacity: 1; } 100% { width: 250px; height: 250px; opacity: 0; border-width: 0px; } }
+
+        /* --- TEAM BIOMETRIC SCANNER --- */
+        .team-card { position: relative; overflow: hidden; text-align: center;}
+        .scanner-beam { position: absolute; top: -100%; left: 0; width: 100%; height: 60px; background: linear-gradient(to bottom, transparent, rgba(56, 189, 248, 0.4), transparent); border-bottom: 1px solid var(--accent-glow); opacity: 0; transition: opacity 0.3s; z-index: 1; pointer-events: none; }
+        .team-card:hover .scanner-beam { animation: scan-down 2s ease-in-out infinite; opacity: 1; }
+        @keyframes scan-down { 0% { top: -30%; } 100% { top: 120%; } }
+        .team-card .role-title { transition: all 0.3s ease; }
+        .team-card:hover .role-title { text-shadow: 0 0 10px var(--accent-glow); color: #fff; }
+
+        /* --- NAVIGATION & MAGNETIC BUTTONS --- */
+        nav { position: fixed; top: 0; width: 100%; padding: 1rem 3rem; background: rgba(3, 7, 18, 0.7); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-bottom: 1px solid var(--glass-border-dark); display: flex; justify-content: space-between; align-items: center; z-index: 100; }
         body.light-mode nav { background: rgba(255, 255, 255, 0.7); border-bottom: 1px solid rgba(0,0,0,0.1);}
-        .nav-links { display: flex; gap: 2rem; }
-        nav a { color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 0.95rem; }
-        nav a:hover { color: var(--text-main); }
+        
+        .nav-links { display: flex; gap: 0.5rem; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 0.95rem; cursor: none; padding: 10px 15px; display: inline-block; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--text-main); }
         .brand { font-weight: 900; font-size: 1.5rem; letter-spacing: -0.5px; background: var(--gradient-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .theme-toggle { background: transparent; border: 1px solid var(--glass-border-light); color: var(--text-main); padding: 0.5rem 1.2rem; border-radius: 50px; cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; display: flex; align-items: center; gap: 8px; transition: all 0.3s ease; }
-        .theme-toggle:hover { background: var(--glass-border-light); }
+        .controls { display: flex; gap: 8px; }
+        .magnetic-wrap { display: inline-block; padding: 10px; }
+        .magnetic-btn { will-change: transform; transition: transform 0.1s ease-out; }
+        .action-btn { background: transparent; border: 1px solid var(--glass-border-light); color: var(--text-main); padding: 0.5rem 1.2rem; border-radius: 50px; cursor: none; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; transition: background 0.3s ease, border-color 0.3s ease; }
+        .action-btn:hover { background: var(--glass-border-light); }
+        .play-active { border-color: var(--accent-glow) !important; box-shadow: 0 0 15px rgba(56, 189, 248, 0.4); color: var(--accent-glow) !important; }
 
         /* --- RESPONSIVE FIXES --- */
-        @media (max-width: 992px) {
-            nav { padding: 1rem 2rem; }
-            .nav-links { display: none; }
+        @media (max-width: 1050px) {
+            .ecosystem-container { flex-direction: column; }
+            .tool-column { width: 100%; flex-direction: row; flex-wrap: wrap; }
+            .tool-btn { flex: 1 1 calc(33% - 1rem); padding: 1rem; font-size: 0.9rem; justify-content: center;}
+            .tool-num { display: none; }
         }
+        @media (max-width: 992px) { nav { padding: 1rem 2rem; } .nav-links { display: none; } }
         @media (max-width: 768px) {
-            h1 { font-size: 3rem; }
-            h2 { font-size: 2rem; }
-            .slide { padding: 6rem 1rem 3rem 1rem; }
-            .flow-step { flex-direction: column; gap: 1rem; padding: 1.5rem; }
-            .step-num { text-align: left; font-size: 2.5rem; }
-            nav { flex-direction: column; gap: 1rem; padding: 1rem; }
-            .slider-container { margin-top: 1.5rem; border-radius: 12px; }
-            .glass-panel { padding: 1.5rem; }
+            body { cursor: auto; } .cursor-dot, .cursor-ring { display: none; }
+            .action-btn, nav a, .slider-input, .tool-btn { cursor: pointer; }
+            h1 { font-size: 3rem; } h2 { font-size: 2rem; } .slide { padding: 6rem 1rem 3rem 1rem; }
+            .title-video-banner { padding: 1rem 1.5rem; }
+            .flow-step { flex-direction: column; gap: 1rem; padding: 1.5rem; } .step-num { text-align: left; font-size: 2.5rem; }
+            nav { flex-direction: column; gap: 1rem; padding: 1rem; } .slider-container { margin-top: 1.5rem; border-radius: 12px; }
+            .glass-panel { padding: 1.5rem; transform: none !important; } 
+            .tool-btn { flex: 1 1 100%; }
+            .timeline-track { display: none; } 
+            .solution-block { filter: none; opacity: 1; } 
+            .game-board { height: 350px; }
+            .room-label { font-size: 0.65rem; top: -30px;}
         }
 
         /* Reveal Animation */
-        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
-        .reveal.active { opacity: 1; transform: translateY(0); }
+        .reveal { opacity: 0; transform: translateY(40px) scale(0.95); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0) scale(1); }
     </style>
 </head>
 <body>
+
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-ring" id="cursor-ring"></div>
 
     <div class="liquid-bg">
         <div class="orb orb-1" id="orb-1"></div>
@@ -211,35 +330,53 @@
         </div>
         
         <div class="nav-links">
-            <a href="#home">Prototype</a>
-            <a href="#problems">Solutions</a>
-            <a href="#stack">Tech Stack</a>
-            <a href="#flow">Architecture</a>
-            <a href="#credits">Team</a>
+            <div class="magnetic-wrap"><a href="#home" class="hover-target magnetic-btn">Prototype</a></div>
+            <div class="magnetic-wrap"><a href="#problems" class="hover-target magnetic-btn">Solutions</a></div>
+            <div class="magnetic-wrap"><a href="#stack" class="hover-target magnetic-btn">Architecture</a></div>
+            <div class="magnetic-wrap"><a href="#flow" class="hover-target magnetic-btn">Execution</a></div>
+            <div class="magnetic-wrap"><a href="#calibrate" class="hover-target magnetic-btn">Calibration</a></div>
+            <div class="magnetic-wrap"><a href="#credits" class="hover-target magnetic-btn">Team</a></div>
         </div>
-        <button id="theme-toggle" class="theme-toggle">
-            <span id="theme-icon">☼</span> <span id="theme-text">Light Mode</span>
-        </button>
+
+        <div class="controls">
+            <div class="magnetic-wrap">
+                <button id="play-toggle" class="action-btn hover-target magnetic-btn">
+                    <span id="play-icon">▶</span> <span id="play-text">Auto-Play</span>
+                </button>
+            </div>
+            <div class="magnetic-wrap">
+                <button id="theme-toggle" class="action-btn hover-target magnetic-btn">
+                    <span id="theme-icon">☼</span> <span id="theme-text">Light</span>
+                </button>
+            </div>
+        </div>
     </nav>
 
     <section id="home" class="slide" data-color1="rgba(67, 56, 202, 0.4)" data-color2="rgba(192, 38, 211, 0.3)">
         <div class="slide-content">
-            <h1 class="reveal">Navigate the Unmapped.</h1>
+            <div class="title-video-banner reveal hover-target">
+                <video class="hero-banner-video" autoplay loop muted playsinline>
+                    <source src="demo_video.mp4" type="video/mp4">
+                </video>
+                <div class="hero-banner-overlay"></div>
+                <h1>Navigate the Unmapped<span class="terminal-blink">.</span></h1>
+            </div>
+            
             <p class="reveal" style="text-align: center; max-width: 800px; margin-bottom: 2rem;">
                 A high-precision, macro-to-micro indoor positioning system powered by OpenCV, Mapbox, and FastAPI.
             </p>
             
-            <div class="slider-container glass-panel reveal" id="slider-container">
-                <img src="image_light.jpg" alt="Light Mode UI" class="slider-image back">
-                <img src="image_dark.jpg" alt="Dark Mode UI" class="slider-image front">
-                
-                <input type="range" min="0" max="100" value="50" class="slider-input" id="slider">
-                
-                <div class="slider-line"></div>
-                
-                <div class="slider-button">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                    <svg style="transform: rotate(180deg); margin-left: -5px;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            <div class="slider-wrapper reveal">
+                <div class="slider-hud" id="slider-hud">MODE: HYBRID OVERLAY</div>
+                <div class="slider-container glass-panel hover-target" id="slider-container">
+                    <img src="image_light.jpg" alt="Light Mode UI" class="slider-image back">
+                    <img src="image_dark.jpg" alt="Dark Mode UI" class="slider-image front">
+                    <input type="range" min="0" max="100" value="50" class="slider-input" id="slider">
+                    <div class="slider-line" id="slider-line"></div>
+                    <div class="slider-button" id="slider-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                        <svg style="transform: rotate(180deg); margin-left: -5px;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                    </div>
                 </div>
             </div>
         </div>
@@ -249,28 +386,37 @@
         <div class="slide-content">
             <h2 class="reveal">System Roadblocks & Solutions</h2>
             <div class="grid">
-                <div class="card glass-panel reveal">
-                    <h3>1. The "GPS Deadzone"</h3>
+                <div class="glass-panel problem-card reveal hover-target">
+                    <div class="status-badge error" data-original="[ ERROR 01 ]">[ SYSTEM_ERROR_01 ]</div>
+                    <h3>The "GPS Deadzone"</h3>
                     <p>Google Maps brings you to the campus gate, but instantly fails indoors. It cannot route you down a specific corridor.</p>
-                    <p><span class="highlight">Solution:</span> Using OpenCV to scan physical QR checkpoints, the app creates an "Indoor GPS" mapping exact (x, y) vectors.</p>
+                    <div class="solution-block">
+                        <p><span class="highlight">Resolved:</span> Using OpenCV to scan physical QR checkpoints, the app creates an "Indoor GPS" mapping exact vectors without satellite signals.</p>
+                    </div>
                 </div>
-
-                <div class="card glass-panel reveal">
-                    <h3>2. The "Fresher Maze"</h3>
+                <div class="glass-panel problem-card reveal hover-target">
+                    <div class="status-badge error" data-original="[ ERROR 02 ]">[ SYSTEM_ERROR_02 ]</div>
+                    <h3>The "Fresher Maze"</h3>
                     <p>New students wander aimlessly trying to find specific labs like the AI Lab or LH-201, increasing campus anxiety.</p>
-                    <p><span class="highlight">Solution:</span> The Streamlit macro-to-micro UI allows visual indoor-stepping before walking, creating clear paths.</p>
+                    <div class="solution-block">
+                        <p><span class="highlight">Resolved:</span> The Streamlit macro-to-micro UI allows visual indoor-stepping before walking, creating clear, visual paths.</p>
+                    </div>
                 </div>
-
-                <div class="card glass-panel reveal">
-                    <h3>3. The "Faculty Hunt"</h3>
-                    <p>Finding a professor urgently to resolve an issue involves knocking on multiple wrong cabin doors.</p>
-                    <p><span class="highlight">Solution:</span> The MySQL database maps faculty to live locations. Search their name, and a pin drops on their current cabin.</p>
+                <div class="glass-panel problem-card reveal hover-target">
+                    <div class="status-badge error" data-original="[ ERROR 03 ]">[ SYSTEM_ERROR_03 ]</div>
+                    <h3>The "Faculty Hunt"</h3>
+                    <p>Finding a professor urgently to resolve an issue involves knocking on multiple wrong cabin doors across blocks.</p>
+                    <div class="solution-block">
+                        <p><span class="highlight">Resolved:</span> The MySQL database maps faculty to live locations. Search their name, and a pin drops directly on their current cabin.</p>
+                    </div>
                 </div>
-
-                <div class="card glass-panel reveal">
-                    <h3>4. Dynamic Routing</h3>
+                <div class="glass-panel problem-card reveal hover-target">
+                    <div class="status-badge error" data-original="[ ERROR 04 ]">[ SYSTEM_ERROR_04 ]</div>
+                    <h3>Dynamic Routing</h3>
                     <p>Printed maps are useless when hackathons or exam seating shifts at the last minute.</p>
-                    <p><span class="highlight">Solution:</span> An admin backend running on FastAPI dynamically updates room statuses across the entire web app instantly.</p>
+                    <div class="solution-block">
+                        <p><span class="highlight">Resolved:</span> An admin backend running on FastAPI dynamically updates room statuses across the entire web app instantly.</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -278,35 +424,34 @@
 
     <section id="stack" class="slide" data-color1="rgba(52, 211, 153, 0.3)" data-color2="rgba(6, 182, 212, 0.3)">
         <div class="slide-content">
-            <h2 class="reveal">The Tech Stack</h2>
-            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
-                
-                <div class="card glass-panel reveal">
-                    <h3>01. Core & Backend</h3>
-                    <p><span class="highlight">Python</span> → Main Language</p>
-                    <p><span class="highlight">FastAPI</span> → API Server</p>
-                    <p><span class="highlight">MySQL</span> → Database</p>
+            <h2 class="reveal">Interactive Tool Ecosystem</h2>
+            <div class="ecosystem-container reveal">
+                <div class="tool-column">
+                    <div class="magnetic-wrap"><button class="tool-btn hover-target magnetic-btn" data-tech="opencv"><span class="tool-num">01</span> OpenCV (Vision)</button></div>
+                    <div class="magnetic-wrap"><button class="tool-btn hover-target magnetic-btn" data-tech="fastapi"><span class="tool-num">02</span> FastAPI (Backend)</button></div>
+                    <div class="magnetic-wrap"><button class="tool-btn hover-target magnetic-btn" data-tech="mysql"><span class="tool-num">03</span> MySQL (Database)</button></div>
+                    <div class="magnetic-wrap"><button class="tool-btn hover-target magnetic-btn" data-tech="streamlit"><span class="tool-num">04</span> Streamlit (UI)</button></div>
+                    <div class="magnetic-wrap"><button class="tool-btn hover-target magnetic-btn" data-tech="render"><span class="tool-num">05</span> Mapbox & Figma</button></div>
                 </div>
-
-                <div class="card glass-panel reveal">
-                    <h3>02. Frontend & Map</h3>
-                    <p><span class="highlight">Streamlit</span> → UI Website</p>
-                    <p><span class="highlight">PyDeck / folium</span> → 3D Map Render</p>
-                    <p><span class="highlight">Mapbox</span> → Map Engine</p>
+                <div class="diagram-column glass-panel">
+                    <div style="display: flex; flex-direction: column; width: 100%;">
+                        <div class="flow-stage"><div class="map-node" id="node-opencv">OpenCV Camera</div></div>
+                        <div class="flow-stage"><div class="flow-line vertical" id="path-cv-api"></div></div>
+                        <div class="flow-stage" style="position: relative;">
+                            <div class="map-node" id="node-mysql" style="position: absolute; left: 10%;">MySQL DB</div>
+                            <div class="flow-line horizontal" id="path-db-api" style="position: absolute; left: 25%; width: 25%;"></div>
+                            <div class="map-node" id="node-fastapi">FastAPI Engine</div>
+                        </div>
+                        <div class="flow-stage"><div class="flow-line vertical" id="path-api-st"></div></div>
+                        <div class="flow-stage"><div class="map-node" id="node-streamlit">Streamlit Dashboard</div></div>
+                        <div class="flow-stage"><div class="flow-line vertical" id="path-st-render"></div></div>
+                        <div class="flow-stage"><div class="map-node" id="node-render">Mapbox / Figma Overlay</div></div>
+                    </div>
+                    <div class="tool-hud">
+                        <h3 id="hud-title">SYSTEM STANDBY</h3>
+                        <p id="hud-desc" style="color: var(--text-muted);">Hover over any tool in the list on the left to reveal its specific use case and view its exact data-flow direction in the architecture map above.</p>
+                    </div>
                 </div>
-
-                <div class="card glass-panel reveal">
-                    <h3>03. Vision & Design</h3>
-                    <p><span class="highlight">OpenCV</span> → QR Detection</p>
-                    <p><span class="highlight">Figma</span> → 2D Floor Plans</p>
-                </div>
-
-                <div class="card glass-panel reveal">
-                    <h3>04. Workflow</h3>
-                    <p><span class="highlight">Git + GitHub</span> → Version Control</p>
-                    <p><span class="highlight">Cloud</span> → Deployment</p>
-                </div>
-
             </div>
         </div>
     </section>
@@ -314,53 +459,76 @@
     <section id="flow" class="slide" data-color1="rgba(124, 58, 237, 0.3)" data-color2="rgba(14, 165, 233, 0.3)">
         <div class="slide-content">
             <h2 class="reveal">Execution Architecture</h2>
-            <div class="flow-container">
-                
-                <div class="flow-step glass-panel reveal">
-                    <div class="step-num">01</div>
-                    <div class="flow-content">
-                        <h3>User opens site ➔ 3D RIT Campus</h3>
-                        <p><span class="highlight">The Tech:</span> Streamlit loads `st_folium`. The map is centered on RIT's main coordinates.</p>
-                        <p><span class="highlight">The Look:</span> The user sees the Mapbox 3D buildings showing the whole campus.</p>
+            <div class="timeline-wrapper reveal">
+                <div class="timeline-track"><div class="timeline-fill" id="timeline-fill"></div></div>
+                <div class="flow-container">
+                    <div class="flow-step glass-panel hover-target" data-index="0">
+                        <div class="step-num">01</div>
+                        <div class="flow-content">
+                            <h3>User opens site ➔ 3D RIT Campus</h3>
+                            <p><span class="highlight">The Tech:</span> Streamlit loads `st_folium`. The map is centered on RIT's main coordinates.</p>
+                            <p><span class="highlight">The Look:</span> The user sees the Mapbox 3D buildings showing the whole campus.</p>
+                        </div>
+                    </div>
+                    <div class="flow-step glass-panel hover-target" data-index="1">
+                        <div class="step-num">02</div>
+                        <div class="flow-content">
+                            <h3>User searches ➔ "LH Block"</h3>
+                            <p><span class="highlight">The Tech:</span> A search bar is built using `st.text_input("Search Building or Room")`.</p>
+                            <p><span class="highlight">The Logic:</span> The backend queries the MySQL database and returns exact GPS bounding coordinates.</p>
+                        </div>
+                    </div>
+                    <div class="flow-step glass-panel hover-target" data-index="2">
+                        <div class="step-num">03</div>
+                        <div class="flow-content">
+                            <h3>Map zooms ➔ Focus on LH Building</h3>
+                            <p><span class="highlight">The Tech:</span> Streamlit automatically updates the Folium map's center coordinates and zoom level.</p>
+                            <p><span class="highlight">The Look:</span> The map smoothly "flies" over to the LH Block and zooms in close.</p>
+                        </div>
+                    </div>
+                    <div class="flow-step glass-panel hover-target" data-index="3">
+                        <div class="step-num">04</div>
+                        <div class="flow-content">
+                            <h3>User clicks ➔ Selects "Floor 2"</h3>
+                            <p><span class="highlight">The Tech:</span> A Streamlit UI element appears (floating button for floors: G, 1, 2, 3).</p>
+                            <p><span class="highlight">The Logic:</span> When clicked, Streamlit switches state from "Campus View" to "Inside View".</p>
+                        </div>
+                    </div>
+                    <div class="flow-step glass-panel hover-target" data-index="4">
+                        <div class="step-num">05</div>
+                        <div class="flow-content">
+                            <h3>Rooms appear ➔ LH201, LH202, AI Lab</h3>
+                            <p><span class="highlight">The Tech:</span> The 3D map hides. Folium's `ImageOverlay` takes over, projecting the Figma floor plan.</p>
+                            <p><span class="highlight">The Look:</span> The screen populates with interactive markers routing to specific classrooms.</p>
+                        </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
 
-                <div class="flow-step glass-panel reveal">
-                    <div class="step-num">02</div>
-                    <div class="flow-content">
-                        <h3>User searches ➔ "LH Block"</h3>
-                        <p><span class="highlight">The Tech:</span> A search bar is built using `st.text_input("Search Building or Room")`.</p>
-                        <p><span class="highlight">The Logic:</span> The backend takes "LH Block", checks the SQLite/MySQL database, and returns the GPS coordinates for that specific building.</p>
+    <section id="calibrate" class="slide" data-color1="rgba(16, 185, 129, 0.2)" data-color2="rgba(56, 189, 248, 0.2)">
+        <div class="slide-content">
+            <h2 class="reveal">System Calibration Simulation</h2>
+            <p class="reveal" style="text-align: center; max-width: 800px; margin-bottom: 2rem;">
+                GPS signals drop indoors. <span class="highlight" style="color: var(--error-glow);">The map is dark.</span> Use your cursor as the OpenCV Flashlight. Search the RIT floorplan to scan and locate the correct target rooms to recalibrate the system.
+            </p>
+            
+            <div class="game-wrapper reveal">
+                <div class="game-board hover-target" id="game-board">
+                    <div class="game-flashlight" id="game-flashlight"></div>
+                    
+                    <div class="game-ui">
+                        <div style="display: flex; flex-direction: column;">
+                            <span style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px;">CURRENT MISSION</span>
+                            <span id="game-target">TARGET: LH-201 (AIML B)</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; align-items: flex-end;">
+                            <span style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px;">NETWORK STATUS</span>
+                            <span id="game-status" style="color: var(--error-glow);">GPS DISCONNECTED</span>
+                        </div>
                     </div>
-                </div>
-
-                <div class="flow-step glass-panel reveal">
-                    <div class="step-num">03</div>
-                    <div class="flow-content">
-                        <h3>Map zooms ➔ Focus on LH Building</h3>
-                        <p><span class="highlight">The Tech:</span> Streamlit automatically updates the Folium map's center coordinates and increases the `zoom_start` level (e.g., from 16 to 19).</p>
-                        <p><span class="highlight">The Look:</span> The map smoothly "flies" over to the LH Block and zooms in close.</p>
                     </div>
-                </div>
-
-                <div class="flow-step glass-panel reveal">
-                    <div class="step-num">04</div>
-                    <div class="flow-content">
-                        <h3>User clicks ➔ Selects "Floor 2"</h3>
-                        <p><span class="highlight">The Tech:</span> A Streamlit UI element appears (like a dropdown `st.selectbox` or a floating button for floors: G, 1, 2, 3).</p>
-                        <p><span class="highlight">The Logic:</span> When the user clicks "Floor 2", Streamlit updates its `st.session_state` to switch from the "Campus View" to the "Inside View".</p>
-                    </div>
-                </div>
-
-                <div class="flow-step glass-panel reveal">
-                    <div class="step-num">05</div>
-                    <div class="flow-content">
-                        <h3>Rooms appear ➔ LH201, LH202, AI Lab</h3>
-                        <p><span class="highlight">The Tech:</span> The 3D map hides. Folium's `ImageOverlay` takes over, projecting the clean 2D Figma floor plan of Floor 2.</p>
-                        <p><span class="highlight">The Look:</span> The screen populates with interactive markers (pins). If they search for your specific branch (AIML-B), the map highlights LH201.</p>
-                    </div>
-                </div>
-
             </div>
         </div>
     </section>
@@ -373,96 +541,323 @@
             </p>
             
             <div class="grid">
-                <div class="glass-panel reveal" style="text-align: center;">
-                    <h3>VISHNUPRIYAN <br><span style="font-size: 0.9rem; color: var(--text-muted); font-weight: 400;">AIML B</span></h3>
-                    <p class="highlight" style="margin-top: 1rem; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">TEAM LEADER</p>
-                    <p style="font-size: 0.9rem;">FastAPI, MySQL, API</p>
+                <div class="glass-panel team-card reveal hover-target">
+                    <div class="scanner-beam"></div>
+                    <h3>VISHNUPRIYAN</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">Backend Architecture</p>
+                    <p class="highlight role-title" style="margin-top: 1rem; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">TEAM LEADER</p>
+                    <p style="font-size: 0.9rem; z-index: 2; position: relative;">FastAPI, MySQL, API</p>
                 </div>
-
-                <div class="glass-panel reveal" style="text-align: center;">
-                    <h3>PARTHIBAN <br><span style="font-size: 0.9rem; color: var(--text-muted); font-weight: 400;">AIML B</span></h3>
-                    <p class="highlight" style="margin-top: 1rem; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">TEAM MEMBER</p>
-                    <p style="font-size: 0.9rem;">Streamlit, Session States</p>
+                <div class="glass-panel team-card reveal hover-target">
+                    <div class="scanner-beam"></div>
+                    <h3>PARTHIBAN</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">Frontend Integration</p>
+                    <p class="highlight role-title" style="margin-top: 1rem; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">CORE MEMBER</p>
+                    <p style="font-size: 0.9rem; z-index: 2; position: relative;">Streamlit, Session States</p>
                 </div>
-
-                <div class="glass-panel reveal" style="text-align: center;">
-                    <h3>LEELA KRISHNA <br><span style="font-size: 0.9rem; color: var(--text-muted); font-weight: 400;">AIML B</span></h3>
-                    <p class="highlight" style="margin-top: 1rem; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">TEAM MEMBER</p>
-                    <p style="font-size: 0.9rem;">Mapbox 3D, Figma</p>
+                <div class="glass-panel team-card reveal hover-target">
+                    <div class="scanner-beam"></div>
+                    <h3>LEELA KRISHNA</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">Spatial Design</p>
+                    <p class="highlight role-title" style="margin-top: 1rem; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">CORE MEMBER</p>
+                    <p style="font-size: 0.9rem; z-index: 2; position: relative;">Mapbox 3D, Figma</p>
                 </div>
-
-                <div class="glass-panel reveal" style="text-align: center;">
-                    <h3>SUSINDRA <br><span style="font-size: 0.9rem; color: var(--text-muted); font-weight: 400;">VLSI B</span></h3>
-                    <p class="highlight" style="margin-top: 1rem; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">TEAM MEMBER</p>
-                    <p style="font-size: 0.9rem;">OpenCV, QR Anchoring</p>
+                <div class="glass-panel team-card reveal hover-target">
+                    <div class="scanner-beam"></div>
+                    <h3>SUSINDRA</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">Computer Vision</p>
+                    <p class="highlight role-title" style="margin-top: 1rem; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">CORE MEMBER</p>
+                    <p style="font-size: 0.9rem; z-index: 2; position: relative;">OpenCV, QR Anchoring</p>
                 </div>
             </div>
         </div>
     </section>
 
     <script>
-        // 1. COMPARISON SLIDER LOGIC
-        const slider = document.getElementById('slider');
-        const container = document.getElementById('slider-container');
+        // --- 1. HYPER-RESPONSIVE CURSOR ---
+        const cursorDot = document.getElementById('cursor-dot');
+        const cursorRing = document.getElementById('cursor-ring');
+        let mouseX = window.innerWidth / 2; let mouseY = window.innerHeight / 2;
+        let ringX = mouseX; let ringY = mouseY;
 
-        slider.addEventListener('input', (e) => {
-            container.style.setProperty('--position', `${e.target.value}%`);
+        function animateCursor() {
+            ringX += (mouseX - ringX) * 0.45; ringY += (mouseY - ringY) * 0.45;
+            cursorDot.style.left = `${mouseX}px`; cursorDot.style.top = `${mouseY}px`;
+            cursorRing.style.left = `${ringX}px`; cursorRing.style.top = `${ringY}px`;
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX; mouseY = e.clientY;
+            const xOffset = (e.clientX / window.innerWidth - 0.5) * 30;
+            const yOffset = (e.clientY / window.innerHeight - 0.5) * 30;
+            document.getElementById('orb-1').style.transform = `translate(${xOffset}px, ${yOffset}px)`;
+            document.getElementById('orb-2').style.transform = `translate(${-xOffset}px, ${-yOffset}px)`;
         });
 
-        // 2. THEME TOGGLE LOGIC
+        const hoverTargets = document.querySelectorAll('.hover-target, input');
+        hoverTargets.forEach(target => {
+            target.addEventListener('mouseenter', () => { cursorRing.classList.add('hovering'); cursorDot.classList.add('hovering'); });
+            target.addEventListener('mouseleave', () => { cursorRing.classList.remove('hovering'); cursorDot.classList.remove('hovering'); });
+        });
+
+        // --- 2. UNIVERSAL MAGNETIC EFFECT ---
+        const magneticBtns = document.querySelectorAll('.magnetic-btn');
+        magneticBtns.forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+            });
+            btn.addEventListener('mouseleave', () => btn.style.transform = `translate(0px, 0px)`);
+        });
+
+        // --- 3. X-RAY VIEWFINDER & SLIDER ---
+        const slider = document.getElementById('slider');
+        const container = document.getElementById('slider-container');
+        const sliderHud = document.getElementById('slider-hud');
+        
+        slider.addEventListener('input', (e) => {
+            const val = e.target.value;
+            container.style.setProperty('--position', `${val}%`);
+            if(val < 35) sliderHud.innerText = "MODE: LIGHT UI";
+            else if(val > 65) sliderHud.innerText = "MODE: DARK UI";
+            else sliderHud.innerText = "MODE: HYBRID OVERLAY";
+        });
+
+        setTimeout(() => {
+            let val = 50; let direction = -1; let sweeps = 0;
+            const sweepInterval = setInterval(() => {
+                val += direction * 2; slider.value = val; slider.dispatchEvent(new Event('input')); 
+                if(val <= 20) direction = 1; if(val >= 80) direction = -1;
+                sweeps++; if(sweeps > 60 && val === 50) clearInterval(sweepInterval); 
+            }, 20);
+        }, 1500);
+
+        // --- 4. PROBLEM CARDS "RESOLVE" EFFECT ---
+        const problemCards = document.querySelectorAll('.problem-card');
+        problemCards.forEach(card => {
+            const badge = card.querySelector('.status-badge');
+            const originalText = badge.getAttribute('data-original');
+            card.addEventListener('mouseenter', () => badge.innerText = "[ RESOLVED ]");
+            card.addEventListener('mouseleave', () => badge.innerText = originalText);
+        });
+
+        // --- 5. INTERACTIVE TECH ECOSYSTEM ---
+        const techData = {
+            'opencv': { title: 'OpenCV (Vision Engine)', desc: 'Detects physical QR anchors, decodes the spatial string (e.g., "LH-201"), and routes raw data to the backend.', nodes: ['node-opencv', 'node-fastapi'], paths: ['path-cv-api'] },
+            'fastapi': { title: 'FastAPI (Backend)', desc: 'Receives decoded data, queries MySQL for exact coordinates, and serves positional data to the UI.', nodes: ['node-opencv', 'node-fastapi', 'node-mysql', 'node-streamlit'], paths: ['path-cv-api', 'path-db-api', 'path-api-st'] },
+            'mysql': { title: 'MySQL (Database)', desc: 'Stores hardcoded X/Y mapping coordinates for every room, responding to location queries.', nodes: ['node-fastapi', 'node-mysql'], paths: ['path-db-api'] },
+            'streamlit': { title: 'Streamlit (UI)', desc: 'Manages sessions, intercepts coordinate data, and updates the screen to render the Mapbox/Figma view.', nodes: ['node-fastapi', 'node-streamlit', 'node-render'], paths: ['path-api-st', 'path-st-render'] },
+            'render': { title: 'Mapbox & Figma (Rendering)', desc: 'Mapbox generates the 3D bird\'s-eye view, while Figma drops live pins onto detailed 2D floor plans.', nodes: ['node-streamlit', 'node-render'], paths: ['path-st-render'] }
+        };
+        const toolBtns = document.querySelectorAll('.tool-btn');
+        const mapNodes = document.querySelectorAll('.map-node');
+        const flowLines = document.querySelectorAll('.flow-line');
+        const hudTitle = document.getElementById('hud-title');
+        const hudDesc = document.getElementById('hud-desc');
+
+        toolBtns.forEach(btn => {
+            btn.addEventListener('mouseenter', () => {
+                toolBtns.forEach(b => b.classList.remove('active')); mapNodes.forEach(n => n.classList.remove('active')); flowLines.forEach(l => l.classList.remove('active'));
+                btn.classList.add('active');
+                const data = techData[btn.getAttribute('data-tech')];
+                hudTitle.textContent = data.title; hudDesc.textContent = data.desc; hudDesc.style.color = "var(--text-main)";
+                data.nodes.forEach(id => document.getElementById(id).classList.add('active')); data.paths.forEach(id => document.getElementById(id).classList.add('active'));
+            });
+            btn.addEventListener('mouseleave', () => {
+                toolBtns.forEach(b => b.classList.remove('active')); mapNodes.forEach(n => n.classList.remove('active')); flowLines.forEach(l => l.classList.remove('active'));
+                hudTitle.textContent = "SYSTEM STANDBY"; hudDesc.textContent = "Hover over any tool to reveal its use case and view data-flow direction."; hudDesc.style.color = "var(--text-muted)";
+            });
+        });
+
+        // --- 6. EXECUTION TIMELINE TRACER ---
+        const flowSteps = document.querySelectorAll('.flow-step');
+        const timelineFill = document.getElementById('timeline-fill');
+        flowSteps.forEach(step => {
+            step.addEventListener('mouseenter', () => {
+                const currentIndex = parseInt(step.getAttribute('data-index'));
+                timelineFill.style.height = `${((currentIndex + 1) / flowSteps.length) * 100}%`;
+                flowSteps.forEach(s => {
+                    const stepNum = s.querySelector('.step-num');
+                    if(parseInt(s.getAttribute('data-index')) <= currentIndex) stepNum.classList.add('active-node');
+                    else stepNum.classList.remove('active-node');
+                });
+            });
+            step.addEventListener('mouseleave', () => {
+                timelineFill.style.height = `0%`; flowSteps.forEach(s => s.querySelector('.step-num').classList.remove('active-node'));
+            });
+        });
+
+        // --- 7. THE GPS DEADZONE MINI-GAME (ADVANCED RIT MAP) ---
+        const gameBoard = document.getElementById('game-board');
+        const targetUI = document.getElementById('game-target');
+        const statusUI = document.getElementById('game-status');
+        
+        // Define the RIT Rooms scattered across the grid
+        const mapRooms = [
+            { id: 'LH-201', name: 'LH-201 (AIML B)', x: 15, y: 30 },
+            { id: 'LH-202', name: 'LH-202 (AIML A)', x: 75, y: 25 },
+            { id: 'AI-LAB', name: 'AI LAB', x: 25, y: 75 },
+            { id: 'VLSI-LAB', name: 'VLSI LAB', x: 80, y: 65 },
+            { id: 'LIBRARY', name: 'CENTRAL LIBRARY', x: 50, y: 50 },
+            { id: 'STAFF', name: 'FACULTY CABIN', x: 40, y: 85 },
+            { id: 'CAFE', name: 'CAFETERIA', x: 55, y: 15 }
+        ];
+
+        // The sequence the player must find to win
+        const missionSequence = [
+            { id: 'LH-201', text: 'TARGET: LH-201 (AIML B)' },
+            { id: 'AI-LAB', text: 'TARGET: AI LAB' },
+            { id: 'STAFF', text: 'TARGET: FACULTY CABIN' }
+        ];
+        
+        let currentMissionIndex = 0;
+        let gameWon = false;
+
+        // Render the rooms onto the board
+        mapRooms.forEach(room => {
+            const roomEl = document.createElement('div');
+            roomEl.classList.add('game-room');
+            roomEl.style.left = `${room.x}%`;
+            roomEl.style.top = `${room.y}%`;
+            roomEl.dataset.id = room.id;
+
+            const labelEl = document.createElement('div');
+            labelEl.classList.add('room-label');
+            labelEl.innerText = room.name;
+            
+            roomEl.appendChild(labelEl);
+            
+            // Game Click Logic
+            roomEl.addEventListener('click', function() {
+                if (gameWon || this.classList.contains('found')) return;
+
+                const currentTargetId = missionSequence[currentMissionIndex].id;
+
+                if (this.dataset.id === currentTargetId) {
+                    // SUCCESS: Correct Room
+                    this.classList.remove('error');
+                    this.classList.add('found');
+                    
+                    // Green Ping
+                    const ping = document.createElement('div');
+                    ping.classList.add('sonar-ping', 'ping-green');
+                    ping.style.left = this.style.left; ping.style.top = this.style.top;
+                    gameBoard.appendChild(ping);
+                    setTimeout(() => ping.remove(), 1000);
+
+                    currentMissionIndex++;
+
+                    // Check Win State
+                    if (currentMissionIndex >= missionSequence.length) {
+                        gameWon = true;
+                        gameBoard.classList.add('victory');
+                        targetUI.innerText = "MISSION ACCOMPLISHED";
+                        targetUI.style.color = "var(--success-glow)";
+                        statusUI.innerText = "GPS ONLINE. SYSTEM RESTORED.";
+                        statusUI.style.color = "var(--success-glow)";
+                    } else {
+                        // Next Target
+                        targetUI.innerText = missionSequence[currentMissionIndex].text;
+                    }
+                } else {
+                    // ERROR: Wrong Room
+                    this.classList.remove('error'); 
+                    void this.offsetWidth; // Trigger reflow to restart animation
+                    this.classList.add('error');
+                    
+                    // Red Ping
+                    const ping = document.createElement('div');
+                    ping.classList.add('sonar-ping', 'ping-red');
+                    ping.style.left = this.style.left; ping.style.top = this.style.top;
+                    gameBoard.appendChild(ping);
+                    setTimeout(() => ping.remove(), 1000);
+                    
+                    statusUI.innerText = "ERROR: WRONG LOCATION...";
+                    statusUI.style.color = "var(--error-glow)";
+                    setTimeout(() => { 
+                        if(!gameWon) {
+                            statusUI.innerText = "GPS DISCONNECTED"; 
+                            statusUI.style.color = "var(--text-muted)";
+                        }
+                    }, 1500);
+                }
+            });
+
+            gameBoard.appendChild(roomEl);
+        });
+
+        // Flashlight Cursor Tracking
+        const updateFlashlight = (e) => {
+            const rect = gameBoard.getBoundingClientRect();
+            let clientX = e.clientX || (e.touches && e.touches[0].clientX);
+            let clientY = e.clientY || (e.touches && e.touches[0].clientY);
+            if(clientX === undefined) return;
+            const x = clientX - rect.left;
+            const y = clientY - rect.top;
+            gameBoard.style.setProperty('--mouse-x', `${x}px`);
+            gameBoard.style.setProperty('--mouse-y', `${y}px`);
+        };
+        gameBoard.addEventListener('mousemove', updateFlashlight);
+        gameBoard.addEventListener('touchmove', updateFlashlight);
+
+
+        // --- 8. 3D CARD TILT EFFECT ---
+        const cards = document.querySelectorAll('.glass-panel');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                if(card.id === 'slider-container' || card.id === 'game-board' || card.classList.contains('diagram-column') || card.classList.contains('flow-step')) return; 
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left; const y = e.clientY - rect.top;
+                const centerX = rect.width / 2; const centerY = rect.height / 2;
+                const rotateX = ((y - centerY) / centerY) * -10; const rotateY = ((x - centerX) / centerX) * 10;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                if(card.id === 'slider-container' || card.id === 'game-board' || card.classList.contains('diagram-column') || card.classList.contains('flow-step')) return;
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+            });
+        });
+
+        // --- 9. THEME TOGGLE LOGIC ---
         const themeBtn = document.getElementById('theme-toggle');
         const themeIcon = document.getElementById('theme-icon');
         const themeText = document.getElementById('theme-text');
-        
-        if(localStorage.getItem('theme') === 'light') {
-            document.body.classList.add('light-mode');
-            themeIcon.textContent = '⏾';
-            themeText.textContent = 'Dark Mode';
-        }
-
+        if(localStorage.getItem('theme') === 'light') { document.body.classList.add('light-mode'); themeIcon.textContent = '⏾'; themeText.textContent = 'Dark'; }
         themeBtn.addEventListener('click', () => {
             document.body.classList.toggle('light-mode');
-            if(document.body.classList.contains('light-mode')) {
-                themeIcon.textContent = '⏾';
-                themeText.textContent = 'Dark Mode';
-                localStorage.setItem('theme', 'light');
-            } else {
-                themeIcon.textContent = '☼';
-                themeText.textContent = 'Light Mode';
-                localStorage.setItem('theme', 'dark');
-            }
+            if(document.body.classList.contains('light-mode')) { themeIcon.textContent = '⏾'; themeText.textContent = 'Dark'; localStorage.setItem('theme', 'light'); } 
+            else { themeIcon.textContent = '☼'; themeText.textContent = 'Light'; localStorage.setItem('theme', 'dark'); }
         });
 
-        // 3. SCROLL REVEAL & DYNAMIC BACKGROUND COLOR LOGIC
-        const orb1 = document.getElementById('orb-1');
-        const orb2 = document.getElementById('orb-2');
+        // --- 10. SCROLL REVEAL & DYNAMIC BACKGROUND ---
+        const orb1 = document.getElementById('orb-1'); const orb2 = document.getElementById('orb-2');
         const sections = document.querySelectorAll('.slide');
 
         function handleScroll() {
-            const windowHeight = window.innerHeight;
-            const scrollY = window.scrollY;
-
-            // Reveal elements
-            const reveals = document.querySelectorAll('.reveal');
-            reveals.forEach(reveal => {
-                const elementTop = reveal.getBoundingClientRect().top;
-                if (elementTop < windowHeight - 50) reveal.classList.add('active');
-            });
-
-            // Change orb colors based on current section
+            const windowHeight = window.innerHeight; const scrollY = window.scrollY;
+            document.querySelectorAll('.reveal').forEach(reveal => { if (reveal.getBoundingClientRect().top < windowHeight - 50) reveal.classList.add('active'); });
             sections.forEach(sec => {
-                const secTop = sec.offsetTop - (windowHeight / 2);
-                const secBottom = secTop + sec.offsetHeight;
-                
-                if (scrollY >= secTop && scrollY < secBottom) {
-                    orb1.style.background = sec.getAttribute('data-color1');
-                    orb2.style.background = sec.getAttribute('data-color2');
-                }
+                const secTop = sec.offsetTop - (windowHeight / 2); const secBottom = secTop + sec.offsetHeight;
+                if (scrollY >= secTop && scrollY < secBottom) { orb1.style.background = sec.getAttribute('data-color1'); orb2.style.background = sec.getAttribute('data-color2'); }
             });
         }
+        window.addEventListener('scroll', handleScroll); handleScroll(); 
 
-        window.addEventListener('scroll', handleScroll);
-        handleScroll(); // Trigger on load
+        // --- 11. PRESENTATION AUTO-PLAY ---
+        const playBtn = document.getElementById('play-toggle'); const playIcon = document.getElementById('play-icon'); const playText = document.getElementById('play-text');
+        let autoPlayInterval; let isPlaying = false; let currentSlideIndex = 0;
+        function advanceSlide() { currentSlideIndex++; if (currentSlideIndex >= sections.length) currentSlideIndex = 0; sections[currentSlideIndex].scrollIntoView({ behavior: 'smooth' }); }
+        function startAutoPlay() {
+            isPlaying = true; playIcon.textContent = '⏸'; playText.textContent = 'Stop'; playBtn.classList.add('play-active');
+            let minDiff = Infinity; sections.forEach((sec, index) => { let diff = Math.abs(window.scrollY - sec.offsetTop); if(diff < minDiff) { minDiff = diff; currentSlideIndex = index; } });
+            autoPlayInterval = setInterval(advanceSlide, 8000); 
+        }
+        function stopAutoPlay() { isPlaying = false; clearInterval(autoPlayInterval); playIcon.textContent = '▶'; playText.textContent = 'Auto-Play'; playBtn.classList.remove('play-active'); }
+        playBtn.addEventListener('click', () => { if (isPlaying) stopAutoPlay(); else startAutoPlay(); });
     </script>
 </body>
 </html>
